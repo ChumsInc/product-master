@@ -8,6 +8,7 @@ import FormGroupTextArea from "../common-components/FormGroupTextArea";
 import Alert from "./Alert";
 import {saveAttributes} from "../actions/product";
 import {DEFAULT_ADJUSTABLE, DEFAULT_DIMENSION} from "../constants/defaults";
+import TextArea from "./TextArea";
 
 class ProductDimensions extends Component {
     static propTypes = {
@@ -99,7 +100,7 @@ class ProductDimensions extends Component {
         const {readOnly} = this.props;
         const {dimensions, shippingDimensions, casePackDimensions, adjustable, dimensionNotes, changed} = this.state;
         return (
-            <form onSubmit={this.onSave} className="dimensions">
+            <form onSubmit={this.onSave} className="dimensions dimensions-inline">
                 <section className="mb-3">
                     <h2 className="">Product Dimensions (inches, lbs)</h2>
                     <DimensionInput onChange={this.onChangeDimensions} inline={true} dimensions={dimensions} hasWeight={true} readOnly={readOnly}/>
@@ -115,7 +116,10 @@ class ProductDimensions extends Component {
                     <DimensionInput onChange={this.onChangeCasePackDimensions} inline={true} dimensions={casePackDimensions} hasQuantity={true} readOnly={readOnly}/>
                 </section>
                 <hr />
-                <FormGroupTextArea onChange={this.onChangeField} value={dimensionNotes || ''} label="Notes" field="dimensionNotes" readOnly={readOnly}/>
+                <section className="my-3">
+                    <h2>Dimension Notes</h2>
+                    <TextArea value={dimensionNotes || ''} field="dimensionNotes" onChange={this.onChangeField} />
+                </section>
                 {!!changed && <Alert message="Don't forget to save your changes" type="warning"/>}
                 <button type="submit" className="btn btn-primary" disabled={readOnly}>Save Dimensions</button>
             </form>

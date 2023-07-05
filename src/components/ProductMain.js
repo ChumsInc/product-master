@@ -283,7 +283,7 @@ class ProductMain extends Component {
                                                    onChange={this.onChangeField} value={color} field="color"/>
                 }
                 <FormGroup colWidth={8} label="Wholesale / MSRP">
-                    <div className="form-row">
+                    <div className="row g-3">
                         <div className="col-6">
                             <TextInput type="number" step=".01" min="0" readOnly={readOnly}
                                        onChange={this.onChangeField} value={stdPrice || ''} field="stdPrice"
@@ -300,13 +300,23 @@ class ProductMain extends Component {
                 <FormGroupTextArea colWidth={8} label="Notes" readOnly={readOnly}
                                    value={notes || ''} field={'notes'} onChange={this.onChangeField}/>
                 <FormGroup colWidth={8} label=" ">
-                    <button type="submit" className="btn btn-sm btn-primary mr-3" disabled={readOnly}>Save</button>
-                    <button type="button" className="btn btn-sm btn-outline-secondary mr-3" disabled={readOnly}
-                            onClick={this.onRevert}>Revert
-                    </button>
-                    <button type="button" className="btn btn-sm btn-outline-secondary mr-3" disabled={readOnly}
-                            onClick={this.onNewProduct}>New
-                    </button>
+                    <div className="row g-3">
+                        <div className="col-auto">
+                            <button type="submit" className="btn btn-sm btn-primary mr-3" disabled={readOnly}>Save</button>
+                        </div>
+                        <div className="col-auto">
+                            <button type="button" className="btn btn-sm btn-outline-secondary mr-3"
+                                    disabled={readOnly} onClick={this.onRevert}>
+                                Revert
+                            </button>
+                        </div>
+                        <div className="col-auto">
+                            <button type="button" className="btn btn-sm btn-outline-secondary mr-3"
+                                    disabled={readOnly} onClick={this.onNewProduct}>
+                                New
+                            </button>
+                        </div>
+                    </div>
                 </FormGroup>
 
                 {changed ?

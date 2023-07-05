@@ -129,6 +129,9 @@ class SKUItemList extends Component {
                 || reFilter.test(item.UDF_UPC) || reFilter.test(item.UDF_UPC_BY_COLOR));
         return (
             <div>
+                <div className="alert alert-warning">
+                    <strong className="text-"><em>See Production/Products/SKU System</em></strong>
+                </div>
                 <DataTableFilter filter={filter} showInactive={showInactive}
                                  onChangeFilter={this.onChangeFilter}
                                  onToggleInactive={() => {

@@ -88,12 +88,12 @@ class ProductContainer extends Component {
         const dimensionsLink = `/product/:id/dimensions`.replace(':id', encodeURIComponent(id));
         const itemsLink = `/product/:id/items`.replace(':id', encodeURIComponent(id));
         return (
-            <div className="row pm__product">
-                <div className="col-sm-6 col-md-4 col-lg-3 pm__product__col-editor">
+            <div className="row g-3 pm__product">
+                <div className="col-sm-6 col-md-4 col-lg-3">
                     <ProductMain />
                 </div>
-                <div className="col-auto pm__product__col-attributes">
-                    <div className="row">
+                <div className="col">
+                    <div className="row g-3">
                         <div className="col-auto">
                             <nav className="nav flex-column nav-pills">
                                 <NavPill to={PRODUCT_SECTIONS.dimensions} active={section === PRODUCT_SECTIONS.dimensions}
@@ -102,7 +102,7 @@ class ProductContainer extends Component {
                                          onClick={this.props.setProductSection}>Sage Items</NavPill>
                             </nav>
                         </div>
-                        <div className="col-auto">
+                        <div className="col">
                             {section === PRODUCT_SECTIONS.dimensions && <ProductDimensions />}
                             {section === PRODUCT_SECTIONS.items && <SKUItemList />}
                         </div>

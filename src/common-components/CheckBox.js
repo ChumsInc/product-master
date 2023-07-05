@@ -2,7 +2,7 @@ import React from 'react';
 
 export const CheckBoxInline = ({checked = false, label, field, onChange, readOnly = false}) => {
     return (
-        <CheckBox checked={checked} label={label} field={field} onChange={onChange} className={'form-check-inline'} readOnly={readOnly}/>
+        <CheckBox checked={checked} label={label} field={field} onChange={onChange} className={'form-check form-check-inline'} readOnly={readOnly}/>
     )
 };
 

@@ -118,28 +118,34 @@ class ProductListTable extends Component {
         const {settings} = this.props;
         return (
             <div>
-                <div className="form-inline">
-                    <FormGroup label="Product Line">
+                <div className="row g-3">
+                    <div className="col-auto">
                         <ProductLineSelect value={productLine} field="productLine" includeAll={true}
                                            onChange={this.onChangeProductLine}
                                            includeDiscontinued={!active}
                                            productLines={settings.productLines}/>
-                    </FormGroup>
-                    <FormGroup label="SKU Group">
+                    </div>
+                    <div className="col-auto">
                         <SKUGroupSelect value={skuGroup} field="skuGroup"
                                         onChange={this.onChangeValue}
                                         productLine={productLine}
                                         includeAll={true} includeInactive={!active}/>
-                    </FormGroup>
-                    <FormGroup label="Season">
+                    </div>
+                    <div className="col-auto">
                         <SeasonSelector onSelect={(season) => this.props.setProductListUI({season})} value={season || ''} />
-                    </FormGroup>
-                    <FormGroup label="Season">
+                    </div>
+                    <div className="col-auto">
                         <StatusSelector onSelect={(statusFilter) => this.props.setProductListUI({statusFilter})} value={statusFilter || ''} />
-                    </FormGroup>
-                    <FormGroupTextInput onChange={this.onChangeValue} value={filter} field="filter" label="Filter"/>
-                    <button type="button" onClick={this.onClickReload} className="btn btn-primary btn-sm">Reload</button>
-                    <Link to="/product/0" onClick={this.onClickNewProduct} className="btn btn-outline-warning btn-sm">New Product</Link>
+                    </div>
+                    <div className="col">
+                        <FormGroupTextInput onChange={this.onChangeValue} value={filter} field="filter" label="Filter" type="search"/>
+                    </div>
+                    <div className="col-auto">
+                        <button type="button" onClick={this.onClickReload} className="btn btn-primary btn-sm">Reload</button>
+                    </div>
+                    <div className="col-auto">
+                        <Link to="/product/0" onClick={this.onClickNewProduct} className="btn btn-outline-warning btn-sm">New Product</Link>
+                    </div>
                 </div>
                 <div className="form-inline">
                     <FormGroup label="Display" labelClassName="mr-3">

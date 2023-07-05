@@ -21,7 +21,7 @@ const Root = ({store}) => {
                 <div className="product-master-container">
                     <Route exact path="/" render={() => <Redirect to={PATH_PRODUCT_LIST}/>}/>
                     <Route path="/" component={AppNavigation} />
-                    <div className="container-fluid">
+                    <div>
                         <Route path={PATH_PRODUCT_LIST} component={ProductList} />
                         <Route path={PATH_PRODUCT} component={ProductContainer}/>
                         <Route path={PATH_SETTINGS} component={Settings} />

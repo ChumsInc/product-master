@@ -34,30 +34,56 @@ export default class DimensionInput extends PureComponent {
     }
 
     render() {
-        const {dimensions, inline, hasWeight, hasQuantity, colWidth, onChange, ...rest} = this.props;
+        const {dimensions, inline, hasWeight, hasQuantity, colWidth, onChange, readOnly, placeholder, ...rest} = this.props;
         const {length, width, height, weight, quantity} = dimensions;
-        const className = (classNames('dimension', {'form-inline': inline}));
+        const className = (classNames('dimension', {'row g-3': inline}));
         const volume = calcVolume(dimensions);
         return (
             <div className={className}>
-                <FormGroupTextInput inline={inline} colWidth={colWidth} type="number" step="any"
-                                    value={length || ''} field={'length'} label="Length"
-                                    onChange={this.onChangeField} {...rest} />
-                <FormGroupTextInput inline={inline} colWidth={colWidth} type="number" step="any"
-                                    value={width || ''} field={'width'} label="Width"
-                                    onChange={this.onChangeField} {...rest}/>
-                <FormGroupTextInput inline={inline} colWidth={colWidth} type="number" step="any"
-                                    value={height || ''} field={'height'} label="Depth"
-                                    onChange={this.onChangeField} {...rest}/>
-                {!!hasWeight && <FormGroupTextInput inline={inline} colWidth={colWidth} type="number" step="any"
-                                                    value={weight || ''} field={'weight'} label="Weight"
-                                                    onChange={this.onChangeField} {...rest}/>}
-                {!!hasQuantity && <FormGroupTextInput inline={inline} colWidth={colWidth} type="number" step="any"
-                                                      value={quantity || ''} field={'quantity'} label="Quantity"
-                                                      onChange={this.onChangeField} {...rest}/>}
-                {!!hasQuantity && <FormGroupTextInput inline={inline} colWidth={colWidth} type="number"
-                                                      value={Number(volume).toFixed(4)}
-                                                      readOnly onChange={noop} label="Unit Volume" />}
+                <div className="col-auto">
+                    <label className="form-label">Length</label>
+                    <input type="number" className="form-control form-control-sm" value={length || ''}
+                           readOnly={readOnly} placeholder="Length"
+                           onChange={(ev) => this.onChangeField({field: 'length', value: ev.target.valueAsNumber})}/>
+                </div>
+                <div className="col-auto">
+                    <label className="form-label">Width</label>
+                    <input type="number" className="form-control form-control-sm" value={width || ''}
+                           readOnly={readOnly} placeholder="Width"
+                           onChange={(ev) => this.onChangeField({field: 'width', value: ev.target.valueAsNumber})}/>
+                </div>
+                <div className="col-auto">
+                    <label className="form-label">Height</label>
+                    <input type="number" className="form-control form-control-sm" value={height || ''}
+                           readOnly={readOnly} placeholder="Height"
+                           onChange={(ev) => this.onChangeField({field: 'height', value: ev.target.valueAsNumber})}/>
+                </div>
+                {!!hasWeight && (
+                    <div className="col-auto">
+                        <label className="form-label">Weight</label>
+                        <input type="number" className="form-control form-control-sm" value={weight || ''}
+                               readOnly={readOnly} placeholder="Weight"
+                               onChange={(ev) => this.onChangeField({field: 'weight', value: ev.target.valueAsNumber})}/>
+                    </div>
+                )}
+                {!!hasQuantity && (
+                    <div className="col-auto">
+                        <label className="form-label">Quantity</label>
+                        <input type="number" className="form-control form-control-sm" value={quantity || ''}
+                               readOnly={readOnly} placeholder="Quantity"
+                               onChange={(ev) => this.onChangeField({field: 'quantity', value: ev.target.valueAsNumber})}/>
+                    </div>
+                )}
+                {!!hasQuantity && (
+                    <div className="col-auto">
+                        <div className="col-auto">
+                            <label className="form-label">Unit Volume</label>
+                            <input type="number" className="form-control form-control-sm" value={Number(volume).toFixed(4)}
+                                   readOnly placeholder="Volume"
+                                   onChange={(ev) => this.onChangeField({field: 'volume', value: ev.target.valueAsNumber})}/>
+                        </div>
+                    </div>
+                )}
             </div>
         );
     }

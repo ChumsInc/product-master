@@ -52,7 +52,7 @@ class AppNav extends Component {
         return (
             <Fragment>
                 <ul className="nav nav-tabs mb-1">
-                    <CompanySelect company={company} onSelect={this.onChangeCompany} />
+                    {/*<CompanySelect company={company} onSelect={this.onChangeCompany} />*/}
                     <li className="nav-item">
                         <NavLink className="nav-link" to={PATH_PRODUCT_LIST}>Product List</NavLink>
                     </li>

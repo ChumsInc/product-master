@@ -107,7 +107,7 @@ const BASE_FIELDS = [
     {
         field: 'devCode',
         title: 'Dev Code',
-        render: (row) => (<Link to={`/product/${row.id}`}>{row.devCode || '-'}</Link>)
+        render: (row) => (<Link to={`/product/${row.id}`}>{row.devCode || null}</Link>)
     },
     {field: 'SKU', title: 'SKU', render: (row) => (<Link to={`/product/${row.id}`}>{row.SKU || '(NO SKU)'}</Link>)},
     {

@@ -6,6 +6,11 @@ module.exports = {
     module: {
         rules: [
             {
+                test: /\.tsx?$/,
+                use: ['ts-loader'],
+                exclude: /node_modules/,
+            },
+            {
                 test: /\.js$/,
                 exclude: '/node_modules/',
                 use: ['babel-loader']
@@ -19,9 +24,7 @@ module.exports = {
             }
         ]
     },
-    plugins: [
-        new BundleAnalyzerPlugin(),
-    ],
+    plugins: [],
     optimization: {
         splitChunks: {
             cacheGroups: {

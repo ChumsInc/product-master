@@ -9,7 +9,7 @@ const localProxy = {
         protocol: 'http:',
         port: 8081
     },
-    ignorePath: false,
+    // ignorePath: false,
     changeOrigin: true,
     secure: false,
 };
@@ -44,6 +44,6 @@ module.exports = merge(common, {
     },
     devtool: 'eval-source-map',
     plugins: [
-        new webpack.HotModuleReplacementPlugin(),
+        // new webpack.HotModuleReplacementPlugin(),
     ]
 });

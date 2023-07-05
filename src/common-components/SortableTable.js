@@ -281,18 +281,20 @@ export default class SortableTable extends Component {
                     </tbody>
                 </table>
                 {!!hasPageIndicators && (rows.length > 0 || filtered) && (
-                    <div className={classNames("page-display", {'form-inline': paginationInline})}>
+                    <div className="row g-3">
                         {!!this.props.onChangeRowsPerPage && (
-                            <RowsPerPage value={rowsPerPage} onChange={this.props.onChangeRowsPerPage}/>
+                            <div className="col-auto">
+                                <RowsPerPage value={rowsPerPage} onChange={this.props.onChangeRowsPerPage}/>
+                            </div>
                         )}
                         {(pages > 1 || !!this.props.onChangeRowsPerPage) && (
-                            <FormGroup label="Pages" inline={true}>
+                            <div className="col">
                                 <Pagination activePage={page} pages={pages}
                                             className={paginationClassName}
                                             onSelect={this.handlePageChange}
                                             filtered={filtered}/>
                                 {rows.length === 0 && <strong className="ml-3">No records.</strong>}
-                            </FormGroup>
+                            </div>
                         )}
                     </div>
                 )}
