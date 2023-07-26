@@ -15,7 +15,7 @@ $bodyPath = "apps/product-master";
 $title = "Product Master";
 $description = "Doing away with the old spreadsheet system that is not able to have multiple people working in at the same time. Replaces the SKU System.";
 
-$ui = new WebUI($bodyPath, $title, $description, true, true);
+$ui = new WebUI($bodyPath, $title, $description, true, 5);
 $ui->version = "2018-11-02";
 $ui->bodyClassName = 'container-fluid';
 $ui->AddCSS("public/styles.css", true);
