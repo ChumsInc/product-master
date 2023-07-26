@@ -102,17 +102,23 @@ class ProductDimensions extends Component {
         return (
             <form onSubmit={this.onSave} className="dimensions dimensions-inline">
                 <section className="mb-3">
-                    <h2 className="">Product Dimensions (inches, lbs)</h2>
-                    <DimensionInput onChange={this.onChangeDimensions} inline={true} dimensions={dimensions} hasWeight={true} readOnly={readOnly}/>
+                    <div className="mb-2">
+                        <h2 className="mb-0">Product Dimensions & Attributes</h2>
+                    </div>
+                    <DimensionInput onChange={this.onChangeDimensions} inline={true} dimensions={dimensions} hasWeight={true} readOnly={readOnly} hasFloat/>
                 </section>
                 <hr />
                 <section className="mb-3">
-                    <h2>Packaged Dimensions (product with packaging; inches, lbs)</h2>
+                    <div className="mb-2">
+                        <h2 className="mb-0">Packaged Dimensions (product with packaging)</h2>
+                    </div>
                     <DimensionInput onChange={this.onChangeShippingDimensions} inline={true} dimensions={shippingDimensions} hasWeight={true} readOnly={readOnly}/>
                 </section>
                 <hr />
                 <section className="mb-3">
-                    <h2>Inner Pack Dimensions (inches)</h2>
+                    <div className="mb-2">
+                        <h2 className="mb-0">Inner Pack Dimensions</h2>
+                    </div>
                     <DimensionInput onChange={this.onChangeCasePackDimensions} inline={true} dimensions={casePackDimensions} hasQuantity={true} readOnly={readOnly}/>
                 </section>
                 <hr />

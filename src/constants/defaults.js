@@ -49,6 +49,7 @@ export const DEFAULT_DIMENSION = {
     width: 0,
     height: 0,
     weight: 0,
+    floatCapacity: 0,
     quantity: 1,
 };
 
