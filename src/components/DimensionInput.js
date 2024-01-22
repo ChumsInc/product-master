@@ -45,7 +45,7 @@ export default class DimensionInput extends PureComponent {
                 <div className="col-auto">
                     <label className="form-label">Length</label>
                     <div className="input-group input-group-sm">
-                    <input type="number" className="form-control form-control-sm" value={length || ''}
+                    <input type="number" className="form-control form-control-sm" value={length ?? ''}
                            readOnly={readOnly} placeholder="Length"
                            onChange={(ev) => this.onChangeField({field: 'length', value: ev.target.valueAsNumber})}/>
                         <div className="input-group-text">in</div>
@@ -54,7 +54,7 @@ export default class DimensionInput extends PureComponent {
                 <div className="col-auto">
                     <label className="form-label">Width</label>
                     <div className="input-group input-group-sm">
-                    <input type="number" className="form-control form-control-sm" value={width || ''}
+                    <input type="number" className="form-control form-control-sm" value={width ?? ''}
                            readOnly={readOnly} placeholder="Width"
                            onChange={(ev) => this.onChangeField({field: 'width', value: ev.target.valueAsNumber})}/>
                         <div className="input-group-text">in</div>
@@ -63,7 +63,7 @@ export default class DimensionInput extends PureComponent {
                 <div className="col-auto">
                     <label className="form-label">Height</label>
                     <div className="input-group input-group-sm">
-                    <input type="number" className="form-control form-control-sm" value={height || ''}
+                    <input type="number" className="form-control form-control-sm" value={height ?? ''}
                            readOnly={readOnly} placeholder="Height"
                            onChange={(ev) => this.onChangeField({field: 'height', value: ev.target.valueAsNumber})}/>
                         <div className="input-group-text">in</div>
@@ -73,7 +73,7 @@ export default class DimensionInput extends PureComponent {
                     <div className="col-auto">
                         <label className="form-label">Weight</label>
                         <div className="input-group input-group-sm">
-                        <input type="number" className="form-control form-control-sm" value={weight || ''}
+                        <input type="number" className="form-control form-control-sm" value={weight ?? ''}
                                readOnly={readOnly} placeholder="Weight"
                                onChange={(ev) => this.onChangeField({field: 'weight', value: ev.target.valueAsNumber})}/>
                             <div className="input-group-text">lb</div>
@@ -84,7 +84,7 @@ export default class DimensionInput extends PureComponent {
                     <div className="col-auto">
                         <label className="form-label">Float Capacity</label>
                         <div className="input-group input-group-sm">
-                            <input type="number" className="form-control form-control-sm" value={floatCapacity || ''}
+                            <input type="number" className="form-control form-control-sm" value={floatCapacity ?? ''}
                                    readOnly={readOnly} placeholder="Weight"
                                    onChange={(ev) => this.onChangeField({field: 'floatCapacity', value: ev.target.valueAsNumber})}/>
                             <div className="input-group-text">g</div>
@@ -95,7 +95,7 @@ export default class DimensionInput extends PureComponent {
                     <div className="col-auto">
                         <label className="form-label">Quantity</label>
                         <div className="input-group input-group-sm">
-                        <input type="number" className="form-control form-control-sm" value={quantity || ''}
+                        <input type="number" className="form-control form-control-sm" value={quantity ?? ''}
                                readOnly={readOnly} placeholder="Quantity"
                                onChange={(ev) => this.onChangeField({field: 'quantity', value: ev.target.valueAsNumber})}/>
                             <div className="input-group-text">#</div>
