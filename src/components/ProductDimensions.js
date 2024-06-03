@@ -1,10 +1,8 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {adjustablePropType, dimensionPropType} from "../constants/myPropTypes";
 import {connect} from "react-redux";
 import DimensionInput from "./DimensionInput";
-import AdjustableInput from "./AdjustableInput";
-import FormGroupTextArea from "../common-components/FormGroupTextArea";
 import Alert from "./Alert";
 import {saveAttributes} from "../actions/product";
 import {DEFAULT_ADJUSTABLE, DEFAULT_DIMENSION} from "../constants/defaults";
@@ -51,7 +49,15 @@ class ProductDimensions extends Component {
 
     componentDidMount() {
         const {productId, dimensions, shippingDimensions, casePackDimensions, adjustable, dimensionNotes} = this.props;
-        this.setState({productId, dimensions, shippingDimensions, casePackDimensions, adjustable, dimensionNotes, changed: false});
+        this.setState({
+            productId,
+            dimensions,
+            shippingDimensions,
+            casePackDimensions,
+            adjustable,
+            dimensionNotes,
+            changed: false
+        });
     }
 
 
@@ -105,26 +111,57 @@ class ProductDimensions extends Component {
                     <div className="mb-2">
                         <h2 className="mb-0">Product Dimensions & Attributes</h2>
                     </div>
-                    <DimensionInput onChange={this.onChangeDimensions} inline={true} dimensions={dimensions} hasWeight={true} readOnly={readOnly} hasFloat/>
+                    <DimensionInput onChange={this.onChangeDimensions} inline={true} dimensions={dimensions}
+                                    hasWeight={true} readOnly={readOnly} hasFloat/>
                 </section>
-                <hr />
+                <hr/>
                 <section className="mb-3">
                     <div className="mb-2">
                         <h2 className="mb-0">Packaged Dimensions (product with packaging)</h2>
                     </div>
-                    <DimensionInput onChange={this.onChangeShippingDimensions} inline={true} dimensions={shippingDimensions} hasWeight={true} readOnly={readOnly}/>
+                    <DimensionInput onChange={this.onChangeShippingDimensions} inline={true}
+                                    dimensions={shippingDimensions} hasWeight={true} readOnly={readOnly}/>
+                    <div className="mt-1 text-muted text-sm-start">
+                        <p>The measurement of a single packaged unit as it hangs on a peg or sits on a shelf. Used in
+                            item setup sheets and for planning purposes on the sales floor.</p>
+                        <div><strong>Height</strong></div>
+                        <ul>
+                            <li>For small items measure 6 as hangs on a peg and divide by 6.</li>
+                            <li>Used to calculate how many fit on a peg.</li>
+                        </ul>
+
+                        <div><strong>Weight</strong></div>
+                        <ul>
+                            <li>For small items pull 60 and divide total by 60.</li>
+                            <li>For large items pull 1.</li>
+                            <li>Used to calculate estimated weight of a Sales Order.</li>
+                        </ul>
+                    </div>
                 </section>
-                <hr />
+                <hr/>
                 <section className="mb-3">
                     <div className="mb-2">
                         <h2 className="mb-0">Inner Pack Dimensions</h2>
                     </div>
-                    <DimensionInput onChange={this.onChangeCasePackDimensions} inline={true} dimensions={casePackDimensions} hasQuantity={true} readOnly={readOnly}/>
+                    <DimensionInput onChange={this.onChangeCasePackDimensions} inline={true}
+                                    dimensions={casePackDimensions} hasQuantity={true} readOnly={readOnly}/>
+                    <div className="mt-1 text-muted text-sm-start">
+                        <p>The measurement of the inner pack as received from the manufacturer. Used in item setup
+                            sheets.</p>
+                        <p>
+                            <div>Small items are 6 packs, or 10 packs;</div>
+                            <div> Large item are 1 packs.</div>
+                        </p>
+                        <div><strong>Unit Volume</strong></div>
+                        <ul>
+                            <li>Used to calculate volume and entered into Sage for landed cost.</li>
+                        </ul>
+                    </div>
                 </section>
-                <hr />
+                <hr/>
                 <section className="my-3">
                     <h2>Dimension Notes</h2>
-                    <TextArea value={dimensionNotes || ''} field="dimensionNotes" onChange={this.onChangeField} />
+                    <TextArea value={dimensionNotes || ''} field="dimensionNotes" onChange={this.onChangeField}/>
                 </section>
                 {!!changed && <Alert message="Don't forget to save your changes" type="warning"/>}
                 <button type="submit" className="btn btn-primary" disabled={readOnly}>Save Dimensions</button>
