@@ -22,16 +22,16 @@ export const setCompany = (company) => (dispatch) => {
     dispatch(fetchSettings(company));
 };
 
-export const fetchRoles = () => (dispatch, getState) => {
-    dispatch({type: FETCH_USER_ROLES, status: FETCH_INIT});
-    fetchGET('/node-dev/user/roles')
-        .then(result => {
-            dispatch({type: FETCH_USER_ROLES, status: FETCH_SUCCESS, list: result.roles || []});
-        })
-        .catch(err => {
-            dispatch({type: FETCH_USER_ROLES, status: FETCH_FAILURE});
-            dispatch(setAlert({message: err.message || 'Unable to fetch user roles'}));
-        })
+export const fetchRoles = () => async (dispatch, getState) => {
+    try {
+        dispatch({type: FETCH_USER_ROLES, status: FETCH_INIT});
+        const profile = await fetchGET('/api/user/profile');
+        const roles = profile?.roles?.map(role => role.role);
+        dispatch({type: FETCH_USER_ROLES, status: FETCH_SUCCESS, list: roles || []});
+    } catch(err) {
+        dispatch({type: FETCH_USER_ROLES, status: FETCH_FAILURE});
+        dispatch(setAlert({message: err.message || 'Unable to fetch user roles'}));
+    }
 };
 
 export const setProductListUI = (changes) => ({type: SET_PRODUCT_LIST_UI, changes});

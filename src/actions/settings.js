@@ -14,7 +14,7 @@ export const fetchSettings = (company) => (dispatch, getState) => {
         company = state.app.company || DEFAULT_COMPANY;
     }
     dispatch({type: FETCH_SETTINGS, status: FETCH_INIT});
-    const url = '/node-dev/production/pm/settings/:company'
+    const url = '/api/operations/product-master/settings/:company'
         .replace(':company', encodeURIComponent(company));
     fetchGET(url)
         .then(res => {
@@ -27,7 +27,7 @@ export const fetchSettings = (company) => (dispatch, getState) => {
                 subCategories = [],
                 skuGroups = [],
                 seasons = [],
-            } = res;
+            } = res.settings ?? {};
             dispatch({type: FETCH_SETTINGS, status: FETCH_SUCCESS, categories, colors, lines, mixes, skuList, subCategories, skuGroups, seasons});
         })
         .catch(err => {

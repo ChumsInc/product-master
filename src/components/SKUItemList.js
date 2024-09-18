@@ -132,20 +132,6 @@ class SKUItemList extends Component {
                 <div className="alert alert-warning">
                     <strong className="text-"><em>See Production/Products/SKU System</em></strong>
                 </div>
-                <DataTableFilter filter={filter} showInactive={showInactive}
-                                 onChangeFilter={this.onChangeFilter}
-                                 onToggleInactive={() => {
-                                     this.setState({showInactive: !showInactive})
-                                 }}>
-                    <h3>Sage Items</h3>
-                </DataTableFilter>
-                {loading && <ProgressBar striped={true} style={{height: '5px'}}/>}
-                <SortableTable data={rows} fields={tableFields} displayPageSelectorInline={false}
-                               page={page} onChangePage={(page) => this.setState({page})}
-                               rowsPerPage={rowsPerPage}
-                               onChangeRowsPerPage={(rowsPerPage) => this.setState({rowsPerPage, page: 1})}
-                               defaultSort="ItemCode" selected={null}
-                               rowClassName={(row) => ({'table-warning': !row.active})}/>
             </div>
         )
     }

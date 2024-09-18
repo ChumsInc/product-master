@@ -36,7 +36,7 @@ export const saveProduct = () => (dispatch, getState) => {
     const {company} = app;
     const {selected} = product;
     dispatch({type: SAVE_PRODUCT, status: FETCH_INIT});
-    const url = '/node-dev/production/pm/product';
+    const url = '/api/operations/product-master/v1/product';
     return fetchPOST(url, {...selected, company})
         .then(({product}) => {
             dispatch({type: SAVE_PRODUCT, status: FETCH_SUCCESS, product});
@@ -49,7 +49,7 @@ export const saveProduct = () => (dispatch, getState) => {
 
 export const saveAttributes = ({changed, productId, ...attributes}) => (dispatch, getState) => {
     dispatch({type: SAVE_ATTRIBUTES, status: FETCH_INIT});
-    const url = '/node-dev/production/pm/product/:productId/attributes'
+    const url = '/api/operations/product-master/v1/product/:productId/attributes'
         .replace(':productId', encodeURIComponent(productId));
     fetchPOST(url, attributes)
         .then(response => {
@@ -64,7 +64,7 @@ export const saveAttributes = ({changed, productId, ...attributes}) => (dispatch
 
 export const getProduct = (id) => (dispatch, getState) => {
     dispatch({type: FETCH_PRODUCT, status: FETCH_INIT});
-    const url = '/node-dev/production/pm/products/:id'
+    const url = '/api/operations/product-master/v1/products/:id'
         .replace(':id', encodeURIComponent(id));
     fetchGET(url)
         .then(({product}) => {
@@ -78,7 +78,7 @@ export const getProduct = (id) => (dispatch, getState) => {
 
 export const getProductList = () => (dispatch, getState) => {
     dispatch({type: FETCH_PRODUCT_LIST, status: FETCH_INIT});
-    const url = '/node-dev/production/pm/products';
+    const url = '/api/operations/product-master/v1/products';
     fetchGET(url)
         .then(products => {
             dispatch({type: FETCH_PRODUCT_LIST, status: FETCH_SUCCESS, list: products});
@@ -96,40 +96,14 @@ export const assignNextColorUPC = (item) => (dispatch, getState) => {
     if (!app.isAdmin) {
         return;
     }
-    fetchGET('/node-dev/sku/by-color/next')
+    fetchGET('/api/operations/sku/by-color/next')
         .then(res => {
             if (!res.result) {
                 throw new Error('Unable to fetch next Color UPC');
             }
             const upc = res.result;
             const data = {...item, UDF_UPC_BY_COLOR: upc, upc};
-            return fetchPOST('/node-dev/sku/by-color', data);
-        })
-        .then(res => {
-            // const [item] = res.result;
-            // item.key = item.ItemCode;
-            // item.active = !(item.InactiveItem === 'Y' || item.ProductType === 'D');
-            // item.notes = item.notes || '';
-            // dispatch({type: RECEIVE_SKU_ITEM, item});
-            // const data = {
-            //     Company: item.company,
-            //     ItemCode: item.ItemCode,
-            //     UDF_UPC_BY_COLOR: item.upc,
-            //     action: 'update',
-            //     id: item.id,
-            // };
-            // return fetchPOST('/sage/api/item-upc.php', data);
-        })
-        .then(res => {
-            // const {post} = res;
-            // return fetchPOST('/node-dev/sku/by-color/update-item', post);
-        })
-        .then(res => {
-            // const [item] = res.result;
-            // item.key = item.ItemCode;
-            // item.active = !(item.InactiveItem === 'Y' || item.ProductType === 'D');
-            // item.notes = item.notes || '';
-            // dispatch({type: RECEIVE_SKU_ITEM, item});
+            return fetchPOST('/api/operations/sku/by-color', data);
         })
         .catch(err => {
             dispatch(setAlert({message: `Unable to assign color UPC: ${err.message}`}));
@@ -142,7 +116,7 @@ export const loadItems = (sku) => (dispatch) => {
         dispatch({type: FETCH_PRODUCT_ITEMS, status: FETCH_SUCCESS, items: []});
         return;
     }
-    const url = '/node-dev/sku/:sku'.replace(':sku', sku);
+    const url = '/api/operations/sku/:sku'.replace(':sku', encodeURIComponent(sku));
     dispatch({type: FETCH_PRODUCT_ITEMS, status: FETCH_INIT});
     fetchGET(url)
         .then(res => {
