@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Link} from "react-router-dom";
 import TrimmedString from "../../../components/TrimmedString";
-import {ProductListSortProps, ProductListTableField, productListTableKey} from "../actionTypes";
+import {ProductListTableField, productListTableKey} from "../actionTypes";
 import Dimension from "../../../components/Dimension";
 import ProductLineText from "../../settings/components/ProductLineText";
 import GTIN from "../../../utils/GTIN";
@@ -11,19 +11,21 @@ import Weight from "../../../components/Weight";
 import Volume from "../../../components/Volume";
 import SeasonBadge from "../../seasons/SeasonBadge";
 import StatusBadges from "./StatusBadges";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import {
     selectFilteredProductListLength,
     selectPagedProductList,
-    selectProductListLength, selectProductListLoaded,
+    selectProductListLength,
+    selectProductListLoaded,
     selectProductListLoading
 } from "../selectors";
-import {Alert, FormCheck, SortableTable, SpinnerButton} from "chums-components";
+import {Alert, FormCheck} from "chums-components";
 import {getLocalStorage, setLocalStorage, storageKeys} from "../../../utils/localStorage";
-import {setPageAction, ConnectedTable, ConnectedPager} from "chums-connected-components";
+import {ConnectedPager, ConnectedTable, setPageAction} from "chums-connected-components";
 import {loadProductListAction} from "../index";
 import {useAppDispatch} from "../../../app/configureStore";
 import {ProductMaster} from "chums-types";
+import {ProductSortProps} from "../../types";
 
 
 const CATEGORY_FIELDS: ProductListTableField[] = [
@@ -88,7 +90,7 @@ const DIMENSION_FIELDS: ProductListTableField[] = [
         field: 'attributes.shippingDimensions.weight',
         title: 'Packaged Weight (lb)',
         sortable: true,
-        render: (row) => <Weight weight={row.attributes?.shippingDimensions?.weight} />,
+        render: (row) => <Weight weight={row.attributes?.shippingDimensions?.weight}/>,
         className: {weight: true, right: true}
     },
     {
@@ -108,7 +110,7 @@ const DIMENSION_FIELDS: ProductListTableField[] = [
         field: 'attributes.casePackDimensions.length',
         title: 'Unit Volume',
         sortable: true,
-        render: (row) => <Volume  dimensions={row.attributes?.casePackDimensions} />,
+        render: (row) => <Volume dimensions={row.attributes?.casePackDimensions}/>,
         className: {weight: true, right: true}
     },
 ];
@@ -129,14 +131,25 @@ const BASE_FIELDS: ProductListTableField[] = [
         sortable: true,
         render: (row) => (<Link to={`/product/${row.id}`}>{row.devCode || '-'}</Link>)
     },
-    {field: 'SKU', title: 'SKU', sortable: true, render: (row) => (<Link to={`/product/${row.id}`}>{row.SKU || '-'}</Link>)},
+    {
+        field: 'SKU',
+        title: 'SKU',
+        sortable: true,
+        render: (row) => (<Link to={`/product/${row.id}`}>{row.SKU || '-'}</Link>)
+    },
     {
         field: 'name',
         title: 'Name',
         sortable: true,
         render: (row) => (<Link to={`/product/${row.id}`}>{row.name || '(not named)'}</Link>)
     },
-    {field: 'itemQuantity', title: 'Active Items', sortable: true, className: 'text-end', render: (row) => row.itemQuantity || ''}
+    {
+        field: 'itemQuantity',
+        title: 'Active Items',
+        sortable: true,
+        className: 'text-end',
+        render: (row) => row.itemQuantity || ''
+    }
 ];
 
 const STATUS_FIELDS: ProductListTableField[] = [
@@ -147,7 +160,7 @@ const STATUS_FIELDS: ProductListTableField[] = [
         render: (row) => <SeasonBadge code={row.season?.code}/>,
         className: 'border-start'
     },
-    {field: 'status', title: 'Status', render: (row) => <StatusBadges status={row.status} />},
+    {field: 'status', title: 'Status', render: (row) => <StatusBadges status={row.status}/>},
 ];
 
 interface FieldToggles {
@@ -159,7 +172,7 @@ interface FieldToggles {
     notes: boolean,
 }
 
-const defaultFields:FieldToggles = getLocalStorage(storageKeys.productList.fields) || {
+const defaultFields: FieldToggles = getLocalStorage(storageKeys.productList.fields) || {
     status: true,
     categories: true,
     UPC: true,
@@ -168,7 +181,7 @@ const defaultFields:FieldToggles = getLocalStorage(storageKeys.productList.field
     notes: false,
 }
 
-function getFields(fieldToggles:FieldToggles):ProductListTableField[] {
+function getFields(fieldToggles: FieldToggles): ProductListTableField[] {
     return [
         ...BASE_FIELDS,
         ...(fieldToggles.status ? STATUS_FIELDS : []),
@@ -180,12 +193,12 @@ function getFields(fieldToggles:FieldToggles):ProductListTableField[] {
     ].filter(f => !!f);
 }
 
-const defaultTableSort:ProductListSortProps = {
+const defaultTableSort: ProductSortProps = {
     field: 'SKU',
     ascending: true,
 }
 
-const rowClassName = (row:ProductMaster) => ({
+const rowClassName = (row: ProductMaster) => ({
     'table-warning': !row.active,
     'table-danger': row.productType === 'D'
 })
@@ -202,7 +215,7 @@ const ProductList = ({}) => {
     const [fieldToggles, setFieldToggles] = useState({...defaultFields});
 
     useEffect(() => {
-        const savedFields:Partial<FieldToggles>|null = getLocalStorage(storageKeys.productList.fields);
+        const savedFields: Partial<FieldToggles> | null = getLocalStorage(storageKeys.productList.fields);
         if (savedFields) {
             let currentFieldToggles = {
                 ...fieldToggles,
@@ -221,7 +234,7 @@ const ProductList = ({}) => {
     }
 
     const onToggleFields = (key: keyof FieldToggles) => {
-        const nextToggles:FieldToggles = {...fieldToggles, [key]: !fieldToggles[key]};
+        const nextToggles: FieldToggles = {...fieldToggles, [key]: !fieldToggles[key]};
         setLocalStorage(storageKeys.productList.fields, nextToggles);
         setFieldToggles(nextToggles);
         setFields(getFields(nextToggles));
@@ -233,29 +246,36 @@ const ProductList = ({}) => {
             <div className="row g-3 align-items-baseline">
                 <div className="col-auto">Column Groups</div>
                 <div className="col-auto">
-                    <FormCheck label="Status" checked={fieldToggles.status} onChange={() => onToggleFields('status')} type="checkbox" />
+                    <FormCheck label="Status" checked={fieldToggles.status} onChange={() => onToggleFields('status')}
+                               type="checkbox"/>
                 </div>
                 <div className="col-auto">
-                    <FormCheck label="UPC" checked={fieldToggles.UPC} onChange={() => onToggleFields('UPC')} type="checkbox" />
+                    <FormCheck label="UPC" checked={fieldToggles.UPC} onChange={() => onToggleFields('UPC')}
+                               type="checkbox"/>
                 </div>
                 <div className="col-auto">
-                    <FormCheck label="Categories" checked={fieldToggles.categories} onChange={() => onToggleFields('categories')} type="checkbox" />
+                    <FormCheck label="Categories" checked={fieldToggles.categories}
+                               onChange={() => onToggleFields('categories')} type="checkbox"/>
                 </div>
                 <div className="col-auto">
-                    <FormCheck label="Prices" checked={fieldToggles.prices} onChange={() => onToggleFields('prices')} type="checkbox" />
+                    <FormCheck label="Prices" checked={fieldToggles.prices} onChange={() => onToggleFields('prices')}
+                               type="checkbox"/>
                 </div>
                 <div className="col-auto">
-                    <FormCheck label="Dimensions" checked={fieldToggles.dimensions} onChange={() => onToggleFields('dimensions')} type="checkbox" />
+                    <FormCheck label="Dimensions" checked={fieldToggles.dimensions}
+                               onChange={() => onToggleFields('dimensions')} type="checkbox"/>
                 </div>
                 <div className="col-auto">
-                    <FormCheck label="Notes" checked={fieldToggles.notes} onChange={() => onToggleFields('notes')} type="checkbox" />
+                    <FormCheck label="Notes" checked={fieldToggles.notes} onChange={() => onToggleFields('notes')}
+                               type="checkbox"/>
                 </div>
             </div>
             <ConnectedTable tableKey={productListTableKey} size="xs" fields={fields} data={list}
                             defaultSort={defaultTableSort} keyField="id" onChangeSort={sortChangeHandler}
-                            rowClassName={rowClassName} />
+                            rowClassName={rowClassName}/>
             {!loading && !filteredLength && <Alert color="info">No products match the current filters</Alert>}
-            <ConnectedPager pageSetKey={productListTableKey} dataLength={filteredLength} filtered={filteredLength !== length} />
+            <ConnectedPager pageSetKey={productListTableKey} dataLength={filteredLength}
+                            filtered={filteredLength !== length}/>
         </div>
     )
 }

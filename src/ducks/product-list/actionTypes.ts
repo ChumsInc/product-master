@@ -1,30 +1,8 @@
-import {apiActionHelper} from "../utils";
-import {ActionInterface, ActionPayload, SortableTableField, SortProps} from "chums-connected-components";
 import {ProductAttributes, ProductDimension, ProductMaster, ProductStatusAttributes} from "chums-types";
-import React from "react";
+import {ReactNode} from "react";
 import {getLocalStorage, storageKeys} from "../../utils/localStorage";
+import {DataTableField} from "chums-components";
 
-export interface ProductListPayload extends ActionPayload {
-    list?: ProductMaster[],
-    value?: string,
-    id?: number,
-    checked?: boolean,
-    status?: keyof ProductStatusAttributes | '',
-}
-
-export interface ProductListAction extends ActionInterface {
-    payload?: ProductListPayload,
-}
-
-export const loadProductList = 'productList/load';
-export const [loadProductListPending, loadProductListResolved, loadProductListRejected] = apiActionHelper(loadProductList);
-
-export const setProductListPLFilter = 'productList/filters/setPLFilter';
-export const setProductListSGFilter = 'productList/filters/setSGFilter';
-export const setProductListSeasonFilter = 'productList/filters/setSeasonFilter';
-export const setProductListStatusFilter = 'productList/filters/setStatusFilter';
-export const setProductListSearchFilter = 'productList/filters/setSearchFilter';
-export const setProductListActiveFilter = 'productList/filters/setActiveFilter';
 
 export const productListTableKey = 'product-list';
 export type ProductListField = keyof ProductMaster
@@ -33,13 +11,9 @@ export type ProductListField = keyof ProductMaster
     | `status.${keyof ProductStatusAttributes}`
     | `season.code`;
 
-export interface ProductListTableField extends SortableTableField {
+export interface ProductListTableField extends Omit<DataTableField, 'field' | 'render'> {
     field: ProductListField,
-    render?: (row: ProductMaster) => React.ReactNode,
-}
-
-export interface ProductListSortProps extends SortProps {
-    field: ProductListField
+    render?: (row: ProductMaster) => ReactNode,
 }
 
 export interface ProductListFilter {
@@ -66,11 +40,11 @@ export class ProductSize implements ProductDimension {
     quantity: number = 0;
     length: number = 0;
     width: number = 0;
-    height:number = 0;
+    height: number = 0;
     weight: number = 0;
     volume: number = 0;
 
-    constructor(dims?:ProductDimension) {
+    constructor(dims?: ProductDimension) {
         this.quantity = dims?.quantity || 1;
         this.length = dims?.length || 0;
         this.width = dims?.width || 0;

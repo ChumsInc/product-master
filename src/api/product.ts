@@ -7,7 +7,8 @@ const debug = Debug('chums:api:product-list');
 export async function fetchProductList():Promise<ProductMaster[]> {
     try {
         const url = '/api/operations/production/pm/products';
-        return await fetchJSON<ProductMaster[]>(url);
+        const res = await fetchJSON<ProductMaster[]>(url);
+        return res ?? [];
     } catch(err:unknown) {
         if (err instanceof Error) {
             debug("fetchProductList()", err.message);

@@ -3,7 +3,7 @@ import {
     ProductAttributes,
     ProductDimension,
     ProductMaster,
-    ProductStatusAttributes
+    ProductStatusAttributes, SortProps
 } from "chums-types";
 
 export type ProductField = keyof ProductMaster
@@ -21,3 +21,7 @@ export type PendingAction = ReturnType<GenericAsyncThunk['pending']>
 export type RejectedAction = ReturnType<GenericAsyncThunk['rejected']>
 export type FulfilledAction = ReturnType<GenericAsyncThunk['fulfilled']>
 export type AsyncThunkAction = ReturnType<GenericAsyncThunk['fulfilled'|'rejected'|'pending']>
+
+export interface ProductSortProps  extends Omit<SortProps, 'field'>{
+    field: ProductField;
+}

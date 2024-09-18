@@ -1,8 +1,8 @@
 import Debug from 'debug';
 import {RootState} from "../../app/configureStore";
 import {createSelector} from "@reduxjs/toolkit";
-import {selectCurrentPage, selectPageSet, selectRowsPerPage, selectTableSort} from "chums-connected-components";
-import {ProductListSortProps, productListTableKey} from "./actionTypes";
+import {selectPageSet, selectRowsPerPage, selectTableSort} from "chums-connected-components";
+import {productListTableKey} from "./actionTypes";
 import {productSorter} from "./utils";
 import {filterPage} from "chums-components";
 import {selectSeasons} from "../seasons/selectors";
@@ -32,7 +32,7 @@ export const selectProductListSeason = createSelector(
     }
 )
 
-export const selectPage = (state:RootState) => selectPageSet(productListTableKey)(state).page;
+export const selectPage = (state: RootState) => selectPageSet(productListTableKey)(state).page;
 
 export const selectFilteredProductList = createSelector(
     [
@@ -63,7 +63,7 @@ export const selectPagedProductList = createSelector(
     (list, sort, page, rowsPerPage) => {
         debug('selectPagedProductList()', {length: list.length, page, rowsPerPage});
         return list
-            .sort(productSorter(sort as ProductListSortProps))
+            .sort(productSorter(sort))
             .filter(filterPage(page, rowsPerPage))
     }
 );

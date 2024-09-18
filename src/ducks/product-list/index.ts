@@ -1,4 +1,4 @@
-import {ProductMaster, ProductStatusAttributes} from "chums-types";
+import {ProductAttributes, ProductMaster, ProductStatusAttributes, SortProps} from "chums-types";
 import {combineReducers} from "redux";
 import {defaultListFilter, loadProductList} from "./actionTypes";
 import {createAction, createAsyncThunk, createReducer, current} from "@reduxjs/toolkit";
@@ -6,7 +6,7 @@ import {setLocalStorage, storageKeys} from "../../utils/localStorage";
 import {fetchProductList} from "../../api/product";
 import {selectProductListLoading} from "./selectors";
 import {RootState} from "../../app/configureStore";
-
+import {ProductSortProps} from "../types";
 
 export const setListPLFilterAction = createAction<string | undefined>('productList/filters/setProductLine');
 export const setListSGFilterAction = createAction<number | undefined>('productList/filters/setSKUGroup')
@@ -57,16 +57,20 @@ const listFiltersReducer = createReducer(defaultListFilter, (builder) => {
 });
 
 interface ProductListState {
-    products: ProductMaster[],
-    loading: boolean,
-    loaded: boolean,
+    products: ProductMaster[];
+    loading: boolean;
+    loaded: boolean;
+    sort: ProductSortProps;
 }
 
 const defaultListState: ProductListState = {
     products: [],
     loading: false,
     loaded: false,
-
+    sort: {
+        field: 'id',
+        ascending: true
+    }
 }
 
 const listReducer = createReducer(defaultListState, (builder) => {
