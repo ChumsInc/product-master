@@ -1,16 +1,17 @@
 import {useAppDispatch, useAppSelector} from "@/app/configureStore.ts";
-import {selectProductLineFilter, setProductLineFilter} from "@/ducks/productList/productListSlice.ts";
+import {
+    selectProductLineFilter,
+    selectShowInactive,
+    setProductLineFilter
+} from "@/ducks/productList/productListSlice.ts";
 import {type ChangeEvent, useId} from "react";
 import ProductLineSelect from "@/components/product-line/ProductLineSelect.tsx";
 import {InputGroup} from "react-bootstrap";
 
-export interface ProductLineFilterProps {
-    includeInactive?: boolean;
-}
-
-export default function ProductLineFilter({includeInactive}: ProductLineFilterProps) {
+export default function ProductLineFilter() {
     const dispatch = useAppDispatch();
     const value = useAppSelector(selectProductLineFilter);
+    const includeInactive = useAppSelector(selectShowInactive)
     const id = useId();
 
 

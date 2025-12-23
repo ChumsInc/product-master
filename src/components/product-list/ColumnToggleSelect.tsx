@@ -1,19 +1,26 @@
-import {useAppDispatch, useAppSelector} from "@/app/configureStore.ts";
-import {selectColumns, setColumn} from "@/ducks/productList/productListSlice.ts";
 import {Dropdown} from "react-bootstrap";
-import {columns} from "@/ducks/productList/utils.ts";
+import {columns, loadColumnStatus, saveColumnStatus} from "@/ducks/productList/utils.ts";
 import ColumnToggleItem from "@/components/product-list/ColumnToggleItem.tsx";
 import type {ProductListColumns, ProductMasterColumn} from "@/ducks/productList/types.ts";
-import {LocalStore} from "@chumsinc/ui-utils";
-import {productListColumnsKey} from "@/utils/storageKeys.ts";
+import {useEffect, useState} from "react";
+import {useTableContext} from "@chumsinc/sortable-tables";
 
 export default function ColumnToggleSelect() {
-    const dispatch = useAppDispatch();
-    const columnStatus = useAppSelector(selectColumns);
+    const [columnStatus, setColumnStatusState] = useState<ProductListColumns>(loadColumnStatus())
+    const {setFields} = useTableContext();
 
-    const onClick = (field: ProductMasterColumn) => (checked: boolean) => {
-        LocalStore.setItem<ProductListColumns>(productListColumnsKey, {...columnStatus, [field]: checked});
-        dispatch(setColumn({[field]: checked}));
+    useEffect(() => {
+        setFields((prev) => {
+            return prev.map(f => ({...f, visible: columnStatus[f.field]}))
+        })
+    }, [columnStatus, setFields]);
+
+    const onClick = (field: ProductMasterColumn) => (visible: boolean) => {
+        setColumnStatusState(prev => {
+            const nextState = {...prev, [field]: visible};
+            saveColumnStatus(nextState);
+            return nextState;
+        })
     }
 
     return (
@@ -23,7 +30,9 @@ export default function ColumnToggleSelect() {
             </Dropdown.Toggle>
             <Dropdown.Menu style={{maxHeight: '40vh', overflowY: 'auto'}}>
                 {columns.map(col => (
-                        <ColumnToggleItem field={col} onClick={onClick(col)} checked={columnStatus[col]}/>
+                        <ColumnToggleItem key={col} field={col} onChangeVisibility={onClick(col)}
+                                          disabled={col === 'SKU'}
+                                          visible={columnStatus[col]}/>
                     )
                 )}
             </Dropdown.Menu>

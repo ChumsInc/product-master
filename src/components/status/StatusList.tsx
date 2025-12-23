@@ -1,18 +1,27 @@
 import type {ProductStatusAttributes} from "chums-types";
 import {Badge} from "react-bootstrap";
-import {badgeStyles} from "@/components/status/badgeStyles.ts";
+import {
+    badgeStyles,
+    statusAbbreviations,
+    statusClassNames,
+    statusKeys,
+    statusTitles
+} from "@/components/status/badgeStyles.ts";
+import clsx from "clsx";
+
 
 export interface StatusListProps {
     status: ProductStatusAttributes;
+    showAbbreviations?: boolean;
 }
-export default function StatusList({status}:StatusListProps) {
+export default function StatusList({status, showAbbreviations}:StatusListProps) {
+    const titles = showAbbreviations ? statusAbbreviations : statusTitles;
+
     return (
-        <div style={{display: "inline"}}>
-            {status.new && <Badge bg={badgeStyles.new} className="text-dark ms-1">N</Badge>}
-            {status.updating && <Badge bg={badgeStyles.updating} className="text-dark ms-1">U</Badge>}
-            {status.approved && <Badge bg={badgeStyles.approved} className="text-light ms-1">A</Badge>}
-            {status.live && <Badge bg={badgeStyles.live} className="text-light ms-1">L</Badge>}
-            {status.discontinued && <Badge bg={badgeStyles.discontinued} className="text-light ms-1">D</Badge>}
+        <div style={{display: "flex", flexDirection: 'row', justifyContent: 'flex-start'}}>
+            {statusKeys
+                .filter(k => status[k])
+                .map(k => <Badge key={k} bg={badgeStyles[k]} className={clsx(statusClassNames[k], "ms-1")}>{titles[k]}</Badge>)}
         </div>
     )
 }

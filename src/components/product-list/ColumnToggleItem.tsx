@@ -14,26 +14,22 @@ const ColumnCheckbox = styled.input`
 
 export interface ColumnToggleItemProps extends Omit<DropdownItemProps, 'onClick'> {
     field: ProductMasterColumn;
-    checked?: boolean;
-    onClick: (checked: boolean) => void;
+    visible?: boolean;
+    onChangeVisibility: (visible: boolean) => void;
 }
 
-export default function ColumnToggleItem({field, checked, onClick, ...rest}: ColumnToggleItemProps) {
+export default function ColumnToggleItem({field, visible, onChangeVisibility, ...rest}: ColumnToggleItemProps) {
     const id = useId();
     const label = columnNames[field] ?? field;
 
-    const changeHandler = (ev: ChangeEvent<HTMLInputElement>) => {
-        onClick(ev.target.checked);
-    }
-
-    const clickHandler = () => {
-        onClick(!checked);
+    const changeHandler = (ev:ChangeEvent<HTMLInputElement>) => {
+        onChangeVisibility(ev.target.checked);
     }
 
     return (
-        <DropdownItem checked={checked} onClick={clickHandler} {...rest} className="d-flex justify-content-between">
+        <DropdownItem {...rest} className="d-flex justify-content-between">
             <ColumnLabel htmlFor={id}>{label}</ColumnLabel>
-            <ColumnCheckbox type="checkbox" id={id} checked={checked} onChange={changeHandler}/>
+            <ColumnCheckbox type="checkbox" id={id} checked={visible} onChange={changeHandler} />
         </DropdownItem>
     )
 }

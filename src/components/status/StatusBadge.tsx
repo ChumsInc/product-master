@@ -1,6 +1,6 @@
 import type {ProductStatusAttributes} from "chums-types";
 import {type BadgeProps} from "react-bootstrap";
-import {badgeStyles, badgeTitles} from "@/components/status/badgeStyles.ts";
+import {badgeStyles, statusTitles} from "@/components/status/badgeStyles.ts";
 import styled from "@emotion/styled";
 import clsx from "clsx";
 
@@ -22,7 +22,7 @@ const BadgeCheckContainer = styled.div`
 `
 
 export interface StatusBadgeProps extends BadgeProps {
-    code: keyof ProductStatusAttributes;
+    code: keyof ProductStatusAttributes | 'all' | 'none';
     showChecked?: boolean;
     checked?: boolean;
 }
@@ -33,16 +33,12 @@ export default function StatusBadge({code, showChecked, checked}: StatusBadgePro
         [`text-bg-${variant}`]: true,
     })
     return (
-        <div className={className}>
-            {badgeTitles[code]}
-        </div>
-    )
-    return (
         <StatusBadgeContainer className={className}>
-            <BadgeTitle>{badgeTitles[code]}</BadgeTitle>
+            <BadgeTitle>{statusTitles[code]}</BadgeTitle>
             {showChecked && (
                 <BadgeCheckContainer>
                     {checked && <span className="bi-check"/>}
+                    {!checked && <span className=""/>}
                 </BadgeCheckContainer>
             )}
         </StatusBadgeContainer>

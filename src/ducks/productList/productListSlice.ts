@@ -2,11 +2,11 @@ import {createEntityAdapter, createSelector, createSlice, type PayloadAction} fr
 import type {ProductMaster, ProductStatusAttributes, SortProps} from "chums-types";
 import {loadProductList} from "@/ducks/productList/actions.ts";
 import {dismissAlert} from "@chumsinc/alert-list";
-import {defaultColumnStatus, filterProductsByStatus, productListSorter} from "@/ducks/productList/utils.ts";
+import {filterProductsByStatus, productListSorter} from "@/ducks/productList/utils.ts";
 import {LocalStore} from "@chumsinc/ui-utils";
-import {productListColumnsKey, productListFilterKey, productListStatusFiltersKey} from "@/utils/storageKeys.ts";
+import {productListFilterKey, productListStatusFiltersKey} from "@/utils/storageKeys.ts";
 import {loadProduct, saveProduct, saveProductAttributes} from "@/ducks/product/actions.ts";
-import type {FlattenedProductMaster, ProductListColumns} from "@/ducks/productList/types.ts";
+import type {FlattenedProductMaster} from "@/ducks/productList/types.ts";
 
 const adapter = createEntityAdapter<ProductMaster, number>({
     selectId: arg => arg.id,
@@ -16,10 +16,11 @@ const adapter = createEntityAdapter<ProductMaster, number>({
 const selectors = adapter.getSelectors();
 
 export interface ProductListFilter {
-    productLine: string | null,
-    skuGroup: number | null,
-    season: number | null,
-    search: string | null,
+    showInactive: boolean;
+    productLine: string | null;
+    skuGroup: number | null;
+    season: number | null;
+    search: string | null;
 }
 
 
@@ -28,13 +29,13 @@ export interface ProductListState {
     sort: SortProps<FlattenedProductMaster>;
     filters: ProductListFilter;
     statusFilters: ProductStatusAttributes;
-    columns: ProductListColumns;
 }
 
 const extraState: ProductListState = {
     status: 'idle',
     sort: {field: 'devCode', ascending: true},
     filters: LocalStore.getItem<ProductListFilter>(productListFilterKey, {
+        showInactive: false,
         productLine: null,
         skuGroup: null,
         season: null,
@@ -47,7 +48,6 @@ const extraState: ProductListState = {
         live: true,
         discontinued: false
     }),
-    columns: LocalStore.getItem<ProductListColumns>(productListColumnsKey, defaultColumnStatus)
 };
 
 const productListSlice = createSlice({
@@ -67,17 +67,13 @@ const productListSlice = createSlice({
             state.filters.season = action.payload;
         },
         setStatusFilter: (state, action: PayloadAction<Partial<ProductStatusAttributes>>) => {
-            state.statusFilters.approved = action.payload.approved ?? state.statusFilters.approved;
-            state.statusFilters.new = action.payload.new ?? state.statusFilters.new;
-            state.statusFilters.updating = action.payload.updating ?? state.statusFilters.updating;
-            state.statusFilters.live = action.payload.live ?? state.statusFilters.live;
-            state.statusFilters.discontinued = action.payload.discontinued ?? state.statusFilters.discontinued;
+            state.statusFilters = {...state.statusFilters, ...action.payload};
         },
         setSearchFilter: (state, action: PayloadAction<string | null>) => {
             state.filters.search = action.payload;
         },
-        setColumn: (state, action: PayloadAction<Partial<ProductListColumns>>) => {
-            state.columns = {...state.columns, ...action.payload};
+        setShowInactive: (state, action: PayloadAction<boolean>) => {
+            state.filters.showInactive = action.payload;
         }
     },
     extraReducers: builder => {
@@ -122,7 +118,7 @@ const productListSlice = createSlice({
         selectSeasonFilter: (state) => state.filters.season,
         selectStatusFilter: (state) => state.statusFilters,
         selectSearchFilter: (state) => state.filters.search,
-        selectColumns: (state) => state.columns,
+        selectShowInactive: (state) => state.filters.showInactive,
     }
 });
 
@@ -136,7 +132,7 @@ export const {
     selectSeasonFilter,
     selectStatusFilter,
     selectSearchFilter,
-    selectColumns
+    selectShowInactive
 } = productListSlice.selectors;
 export const {
     setProductListSort,
@@ -145,13 +141,14 @@ export const {
     setSeasonFilter,
     setStatusFilter,
     setSearchFilter,
-    setColumn
+    setShowInactive
 } = productListSlice.actions;
 
 export const selectFilteredProductList = createSelector(
-    [selectProductList, selectProductListSort, selectProductLineFilter, selectSkuGroupFilter, selectSeasonFilter, selectStatusFilter, selectSearchFilter],
-    (list, sort, productLine, skuGroup, season, status, search) => {
+    [selectProductList, selectProductListSort, selectProductLineFilter, selectSkuGroupFilter, selectSeasonFilter, selectStatusFilter, selectSearchFilter, selectShowInactive],
+    (list, sort, productLine, skuGroup, season, status, search, showInactive) => {
         return list
+            .filter(product => showInactive || product.active)
             .filter(product => !productLine || product.productLine === productLine)
             .filter(product => !skuGroup || product.idSKUGroup === skuGroup)
             .filter(product => !season || product.season?.id === season)

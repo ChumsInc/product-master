@@ -1,7 +1,7 @@
 import {fetchJSON} from "@chumsinc/ui-utils";
-import type {ProductMaster} from "chums-types";
+import type {ProductAttributes, ProductMaster} from "chums-types";
 
-export async function fetchProduct(arg: number) {
+export async function fetchProduct(arg: number|string) {
     try {
         const url = `/api/operations/product-master/v2/products/${arg}.json`;
         const res = await fetchJSON<{ product: ProductMaster|null }>(url, {cache: 'no-cache'});
@@ -34,10 +34,10 @@ export async function postProduct(arg: ProductMaster):Promise<ProductMaster|null
     }
 }
 
-export interface SaveProductAttributesArgs {
-    id: Pick<ProductMaster, 'id'>;
-    attributes: Partial<ProductMaster['attributes']>;
+export type SaveProductAttributesArgs = Pick<ProductMaster, 'id'> & {
+    attributes: Partial<ProductAttributes>
 }
+
 export async function postProductAttributes(arg: SaveProductAttributesArgs):Promise<ProductMaster|null> {
     try {
         const body = JSON.stringify(arg);

@@ -25,6 +25,7 @@ export default function SkuGroupSelect({value, onChange, productLine, includeIna
     return (
         <FormSelect value={value ?? ''} onChange={changeHandler} {...rest}>
             {includeAll && <option value="">All</option> }
+            {!includeAll && <option value=""></option> }
             {groups.map(sg => <option key={sg.id} value={sg.id}>
                 {sg.description} ({sg.code})
             </option> )}

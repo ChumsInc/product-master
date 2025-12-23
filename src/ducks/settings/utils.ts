@@ -26,12 +26,31 @@ export const skuGroupSorter = (sort: SortProps<SKUGroup>) =>
         }
     }
 
+const seasonPattern = /^(\S{2})(\d{2})$/i;
+
+const seasonSplit = (code: string): string => {
+    if (seasonPattern.test(code)) {
+        const match = seasonPattern.exec(code);
+        if (!match) {
+            return code;
+        }
+        return `${match[2]}-${match[1]}`;
+    }
+    return code;
+}
+
 export const seasonSorter = (sort: SortProps<ProductSeason>) =>
     (a: ProductSeason, b: ProductSeason) => {
+        console.log(a.code, b.code, seasonSplit(a.code ?? ''), seasonSplit(b.code ?? ''))
         const sortMod = sort.ascending ? 1 : -1;
         const field = sort.field;
         switch (field) {
             case 'code':
+                return (
+                    seasonSplit(a[field] ?? '').localeCompare(seasonSplit(b[field] ?? '')) === 0
+                        ? a.id - b.id
+                        : seasonSplit(a[field] ?? '').localeCompare(seasonSplit(b[field] ?? ''))
+                ) * sortMod;
             case 'description':
             case 'notes':
                 return (

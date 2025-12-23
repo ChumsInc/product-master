@@ -1,7 +1,7 @@
 import {fetchJSON} from "@chumsinc/ui-utils";
 import type {
     BaseSKURecord,
-    CategoryRecord,
+    CategoryRecord, CollectionRecord,
     CountryOfOriginRecord,
     PrimaryVendorRecord,
     ProductLineRecord,
@@ -14,7 +14,7 @@ import type {ProductMaterial} from "@/types/settings.ts";
 export interface SettingsResponse {
     productLines: ProductLineRecord[];
     categories: CategoryRecord[];
-    subCategories: string[];
+    collections: CollectionRecord[];
     skuList: BaseSKURecord[];
     colors: ProductColor[];
     mixes: ProductMixInfo[];

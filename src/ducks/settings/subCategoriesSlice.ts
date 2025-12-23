@@ -1,9 +1,10 @@
 import {createEntityAdapter, createSlice} from "@reduxjs/toolkit";
 import {loadSettings} from "@/ducks/settings/actions.ts";
+import type {CollectionRecord} from "chums-types/production";
 
-const adapter = createEntityAdapter<string, string>({
-    selectId: arg => arg,
-    sortComparer: (a, b) => a.localeCompare(b)
+const adapter = createEntityAdapter<CollectionRecord, string>({
+    selectId: arg => arg.Category3,
+    sortComparer: (a, b) => a.Category3.localeCompare(b.Category3)
 })
 
 const selectors = adapter.getSelectors();
@@ -15,7 +16,7 @@ const subCategoriesSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(loadSettings.fulfilled, (state, action) => {
-                adapter.setAll(state, action.payload?.subCategories ?? []);
+                adapter.setAll(state, action.payload?.collections ?? []);
             })
     },
     selectors: {

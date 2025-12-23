@@ -4,15 +4,18 @@ import type {ProductMaster} from "chums-types";
 import type {RootState} from "@/app/configureStore.ts";
 import {selectCurrentProductStatus} from "@/ducks/product/currentProductSlice.ts";
 
-export const loadProduct = createAsyncThunk<ProductMaster|null, number, {state:RootState}>(
+export const loadProduct = createAsyncThunk<ProductMaster|null, number|string, {state:RootState}>(
     'currentProduct/load',
     async (arg) => {
+        if (!arg) {
+            return null;
+        }
         return await fetchProduct(arg);
     },
     {
         condition: (arg, {getState}) => {
             const state = getState();
-            return arg > 0 && selectCurrentProductStatus(state) === 'idle';
+            return !!arg && selectCurrentProductStatus(state) === 'idle';
         }
     }
 )

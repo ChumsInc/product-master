@@ -1,26 +1,23 @@
 import {useAppDispatch, useAppSelector} from "@/app/configureStore.ts";
 import {selectSeasonFilter, setSeasonFilter} from "@/ducks/productList/productListSlice.ts";
-import SeasonSelect from "@/components/season/SeasonSelect.tsx";
 import {InputGroup} from "react-bootstrap";
 import {useId} from "react";
+import type {ProductSeason} from "chums-types";
+import SeasonDropDown from "@/components/season/SeasonDropDown.tsx";
 
-export interface SeasonFilterProps {
-    includeInactive?: boolean;
-}
 
-export default function SeasonFilter({includeInactive}: SeasonFilterProps) {
+export default function SeasonFilter() {
     const dispatch = useAppDispatch();
     const value = useAppSelector(selectSeasonFilter);
     const id = useId();
-    const changeHandler = (value: number | null) => {
-        dispatch(setSeasonFilter(value));
+    const changeHandler = (value: ProductSeason | null) => {
+        dispatch(setSeasonFilter(value?.id ?? null));
     }
 
     return (
         <InputGroup size="sm">
             <InputGroup.Text as="label" htmlFor={id}>Season</InputGroup.Text>
-            <SeasonSelect value={value} onChange={changeHandler} id={id}
-                          includeInactive={includeInactive} includeAll/>
+            <SeasonDropDown onChange={changeHandler} value={value} id={id} includeAll/>
         </InputGroup>
     )
 

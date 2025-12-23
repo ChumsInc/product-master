@@ -1,33 +1,65 @@
 import type {ProductStatusAttributes} from "chums-types";
-import {useAppDispatch, useAppSelector} from "@/app/configureStore.ts";
-import {selectStatusFilter, setStatusFilter} from "@/ducks/productList/productListSlice.ts";
-import {Dropdown} from "react-bootstrap";
+import {Dropdown, type DropdownProps, type DropdownToggleProps} from "react-bootstrap";
 import StatusDropdownItem from "@/components/status/StatusDropdownItem.tsx";
 import StatusList from "@/components/status/StatusList.tsx";
+import {statusKeys} from "@/components/status/badgeStyles.ts";
+import styled from "@emotion/styled";
 
-export default function StatusDropdown() {
-    const dispatch = useAppDispatch();
-    const statusFilter = useAppSelector(selectStatusFilter);
+const StatusDropdownToggle = styled(Dropdown.Toggle)`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+`
+export interface StatusDropdownProps extends Omit<DropdownProps, 'onChange'|'children'> {
+    status: ProductStatusAttributes;
+    onChange: (status: ProductStatusAttributes) => void;
+    showAbbreviations?: boolean;
+    buttonAttributes?: DropdownToggleProps;
+    includeAll?: boolean;
+}
 
-    const changeHandler = (key: keyof ProductStatusAttributes) => {
-        dispatch(setStatusFilter({[key]: !statusFilter[key]}))
+const allStatus:ProductStatusAttributes = {
+    new: true,
+    approved: true,
+    live: true,
+    updating: true,
+    watch: true,
+    discontinued: true,
+}
+const noneStatus:ProductStatusAttributes = {
+    new: false,
+    approved: false,
+    live: false,
+    updating: false,
+    watch: false,
+    discontinued: false,
+}
+
+export default function StatusDropdown({status, onChange, showAbbreviations, id, buttonAttributes, includeAll, ...rest}: StatusDropdownProps) {
+    const changeHandler = (code: keyof ProductStatusAttributes) => {
+        onChange({...status, [code]: !status[code]});
     }
     return (
-        <Dropdown>
-            <Dropdown.Toggle size="sm" variant="outline-secondary" id="dropdown-basic">
-                <StatusList status={statusFilter}/>
-            </Dropdown.Toggle>
+        <Dropdown {...rest}>
+            <StatusDropdownToggle size="sm" variant="outline-secondary" id={id} aria-label="Current Status values"
+                             {...buttonAttributes}>
+                <StatusList status={status} showAbbreviations={showAbbreviations}/>
+            </StatusDropdownToggle>
             <Dropdown.Menu>
-                <StatusDropdownItem code="new" checked={statusFilter.new}
-                                    onClick={() => changeHandler('new')}/>
-                <StatusDropdownItem code="updating" checked={statusFilter.updating}
-                                    onClick={() => changeHandler('updating')}/>
-                <StatusDropdownItem code="approved" checked={statusFilter.approved}
-                                    onClick={() => changeHandler('approved')}/>
-                <StatusDropdownItem code="live" checked={statusFilter.live}
-                                    onClick={() => changeHandler('live')}/>
-                <StatusDropdownItem code="discontinued" checked={statusFilter.discontinued}
-                                    onClick={() => changeHandler('discontinued')}/>
+                {includeAll && (
+                    <StatusDropdownItem code="all" checked={false}
+                                        onClick={() => onChange(allStatus)}/>
+                )}
+                {includeAll && (
+                    <StatusDropdownItem code="none" checked={false}
+                                        onClick={() => onChange(noneStatus)}/>
+                )}
+                <Dropdown.Divider/>
+                {statusKeys.map(k => (
+                    <StatusDropdownItem key={k} code={k} checked={status[k]}
+                                        onClick={() => changeHandler(k)}/>
+                ))}
             </Dropdown.Menu>
         </Dropdown>
     )

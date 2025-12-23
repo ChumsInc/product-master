@@ -1,7 +1,8 @@
-import {createEntityAdapter, createSlice, type PayloadAction} from "@reduxjs/toolkit";
+import {createEntityAdapter, createSelector, createSlice, type PayloadAction} from "@reduxjs/toolkit";
 import {loadSeason, loadSeasons, loadSettings, saveSeason} from "@/ducks/settings/actions.ts";
 import type {ProductSeason} from "chums-types";
 import {dismissAlert} from "@chumsinc/alert-list";
+import {seasonSorter} from "@/ducks/settings/utils.ts";
 
 const adapter = createEntityAdapter<ProductSeason, number>({
     selectId: arg => arg.id,
@@ -71,10 +72,18 @@ const seasonsSlice = createSlice({
     selectors: {
         selectSeasons: (state) => selectors.selectAll(state),
         selectCurrentSeason: (state) => state.currentSeason ?? null,
-        selectSeasonsStatus: (state) => state.status
+        selectSeasonsStatus: (state) => state.status,
+        selectSeasonById: (state, id: number) => selectors.selectById(state, id)
     }
 })
 
 export default seasonsSlice;
-export const {selectSeasons, selectSeasonsStatus, selectCurrentSeason} = seasonsSlice.selectors;
+export const {selectSeasons, selectSeasonsStatus, selectCurrentSeason, selectSeasonById} = seasonsSlice.selectors;
 export const {setCurrentSeason} = seasonsSlice.actions;
+
+export const selectSortedSeasons = createSelector(
+    [selectSeasons],
+    (list) => {
+        return [...list].sort(seasonSorter({field: 'code', ascending: false}))
+    }
+)

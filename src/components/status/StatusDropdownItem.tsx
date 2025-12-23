@@ -3,7 +3,7 @@ import {DropdownItem, type DropdownItemProps} from "react-bootstrap";
 import StatusBadge from "@/components/status/StatusBadge.tsx";
 
 export interface StatusDropdownItemProps extends DropdownItemProps {
-    code: keyof ProductStatusAttributes;
+    code: keyof ProductStatusAttributes|'all'|'none';
     checked?: boolean;
 }
 
