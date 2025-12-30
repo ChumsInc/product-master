@@ -1,19 +1,22 @@
 import ProductListFilter from "@/components/product-list/ProductListFilter.tsx";
 import {DataTableProvider} from "@chumsinc/sortable-tables";
 import ProductListTable from "@/components/product-list/ProductListTable.tsx";
-import {getProductListColumns} from "@/components/product-list/ProductListColumns.tsx";
 import {ErrorBoundary} from "react-error-boundary";
 import ErrorFallbackComponent from "@/components/common/ErrorFallbackComponent.tsx";
-import {useAppDispatch} from "@/app/configureStore.ts";
+import {useAppDispatch, useAppSelector} from "@/app/configureStore.ts";
 import {useEffect} from "react";
 import {loadProductList} from "@/ducks/productList/actions.ts";
+import {getProductListColumns} from "@/components/product-list/productListColumns.tsx";
+import {selectProductListLoaded} from "@/ducks/productList/productListSlice.ts";
 
 export default function ProductListContainer() {
     const dispatch = useAppDispatch();
-
+    const loaded = useAppSelector(selectProductListLoaded)
     useEffect(() => {
-        dispatch(loadProductList());
-    }, [dispatch]);
+        if (!loaded) {
+            dispatch(loadProductList());
+        }
+    }, [dispatch, loaded]);
 
     return (
         <div>

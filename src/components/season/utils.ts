@@ -1,8 +1,13 @@
-import tinycolor from "tinycolor2";
+import {type ColorInput, mostReadable, TinyColor} from "@ctrl/tinycolor";
 
-export function getSeasonStyle(bg: string) {
+export function getSeasonStyle(color: ColorInput) {
     return {
-        backgroundColor: bg,
-        color: tinycolor(bg).isLight() ? 'black' : 'white'
+        backgroundColor: new TinyColor(color).toHexString(),
+        color: mostReadable(color, ['#FFF', '#000'], {
+            includeFallbackColors: true,
+            size: "small",
+            level: 'AA'
+        })?.toHexString() ?? '#F00',
+        border: 'none',
     };
 }

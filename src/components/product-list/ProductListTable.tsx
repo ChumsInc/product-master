@@ -10,9 +10,11 @@ import type {SortProps} from "chums-types";
 import type {FlattenedProductMaster} from "@/ducks/productList/types.ts";
 import {ProgressBar} from "react-bootstrap";
 import clsx from "clsx";
+import {selectCurrentProduct} from "@/ducks/product/currentProductSlice.ts";
 
 export default function ProductListTable() {
     const dispatch = useAppDispatch();
+    const product = useAppSelector(selectCurrentProduct);
     const [, setTableSort] = useTableSort<FlattenedProductMaster>()
     const data = useAppSelector(selectFilteredProductList);
     const [page, setPage] = useState(0);
@@ -38,6 +40,7 @@ export default function ProductListTable() {
             {status === 'loading' && <ProgressBar animated now={100} className="my-1"/>}
             <div className="table-responsive">
                 <SortableTable data={data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)} size="xs"
+                               selected={(row) => product?.id === row.id}
                                rowClassName={(row) => clsx({'table-warning': !row.active})}
                                onChangeSort={sortChangeHandler} keyField="id"/>
             </div>

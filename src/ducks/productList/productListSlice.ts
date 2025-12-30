@@ -26,6 +26,7 @@ export interface ProductListFilter {
 
 export interface ProductListState {
     status: 'idle' | 'loading' | 'rejected';
+    loaded: boolean;
     sort: SortProps<FlattenedProductMaster>;
     filters: ProductListFilter;
     statusFilters: ProductStatusAttributes;
@@ -33,6 +34,7 @@ export interface ProductListState {
 
 const extraState: ProductListState = {
     status: 'idle',
+    loaded: false,
     sort: {field: 'devCode', ascending: true},
     filters: LocalStore.getItem<ProductListFilter>(productListFilterKey, {
         showInactive: false,
@@ -83,6 +85,7 @@ const productListSlice = createSlice({
             })
             .addCase(loadProductList.fulfilled, (state, action) => {
                 state.status = 'idle';
+                state.loaded = true;
                 adapter.setAll(state, action.payload)
             })
             .addCase(loadProductList.rejected, (state) => {
@@ -111,6 +114,7 @@ const productListSlice = createSlice({
     },
     selectors: {
         selectProductList: (state) => selectors.selectAll(state),
+        selectProductListLoaded: (state) => state.loaded,
         selectProductListSort: (state) => state.sort,
         selectProductListStatus: (state) => state.status,
         selectProductLineFilter: (state) => state.filters.productLine,
@@ -125,6 +129,7 @@ const productListSlice = createSlice({
 export default productListSlice;
 export const {
     selectProductList,
+    selectProductListLoaded,
     selectProductListSort,
     selectProductListStatus,
     selectProductLineFilter,

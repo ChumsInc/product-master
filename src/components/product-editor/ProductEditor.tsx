@@ -44,6 +44,7 @@ export default function ProductEditor() {
     }, [])
 
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setCurrentProduct(product ?? newProduct);
     }, [product]);
 

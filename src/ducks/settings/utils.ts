@@ -14,6 +14,7 @@ export const skuGroupSorter = (sort: SortProps<SKUGroup>) =>
             case 'code':
             case "description":
             case 'notes':
+            case 'productLine':
                 return (
                     (a[field] ?? '').localeCompare(b[field] ?? '') === 0
                         ? a.id - b.id

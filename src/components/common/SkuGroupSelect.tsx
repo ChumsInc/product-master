@@ -1,6 +1,6 @@
 import {FormSelect, type FormSelectProps} from "react-bootstrap";
 import {useAppSelector} from "@/app/configureStore.ts";
-import {selectSKUGroups} from "@/ducks/settings/skuGroupsSlice.ts";
+import {selectSKUGroups} from "@/ducks/sku-groups/skuGroupsSlice.ts";
 import {skuGroupSorter} from "@/ducks/settings/utils.ts";
 import type {ChangeEvent} from "react";
 

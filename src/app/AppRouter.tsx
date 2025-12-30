@@ -4,7 +4,8 @@ import {tabProductList} from "@/components/app/AppNavigation.tsx";
 import ProductListContainer from "@/components/product-list/ProductListContainer.tsx";
 import AppRedirect from "@/components/app/AppRedirect.tsx";
 import ProductContent from "@/components/product-editor/ProductContent.tsx";
-import SeasonEditor from "@/components/season/SeasonEditor.tsx";
+import SeasonsContainer from "@/components/season/SeasonsContainer.tsx";
+import SKUGroupsContent from "@/components/sku-group/SKUGroupsContent.tsx";
 
 export default function AppRouter() {
     return (
@@ -17,7 +18,8 @@ export default function AppRouter() {
                         <Route index element={<ProductContent />} />
                         <Route path=":id" element={<ProductContent />} />
                     </Route>
-                    <Route path="seasons" element={<SeasonEditor />} />
+                    <Route path="seasons" element={<SeasonsContainer />} />
+                    <Route path="sku-groups" element={<SKUGroupsContent />} />
                     <Route path="*" element={<div>Content Not Found</div>} />
                 </Route>
             </Routes>

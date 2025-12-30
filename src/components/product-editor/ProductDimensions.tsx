@@ -11,6 +11,7 @@ import isEqual from "fast-deep-equal";
 import Alert from "react-bootstrap/esm/Alert";
 
 type DimensionAttributes = Pick<ProductAttributes, 'dimensions' | 'shippingDimensions' | 'casePackDimensions'>;
+
 export default function ProductDimensions() {
     const dispatch = useAppDispatch();
     const product = useAppSelector(selectCurrentProduct);
@@ -29,6 +30,7 @@ export default function ProductDimensions() {
         }, [])
 
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setAttributes(product?.attributes ?? newProduct.attributes ?? {});
     }, [product]);
 

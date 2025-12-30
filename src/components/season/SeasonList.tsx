@@ -12,7 +12,7 @@ export default function SeasonList({onSelect}:SeasonListProps) {
     return (
         <div className="d-flex flex-column">
             {seasons.map(season => (
-                <SeasonBadge seasonId={season.id} className="my-2 fs-5"
+                <SeasonBadge key={season.id} as="button" seasonId={season.id} className="my-2 fs-5"
                              onClick={() => onSelect(season)}/>
             ))}
         </div>

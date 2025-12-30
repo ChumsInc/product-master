@@ -1,7 +1,7 @@
-import {Badge, type BadgeProps} from "react-bootstrap";
-import {getSeasonStyle} from "@/components/season/utils.ts";
+import {type BadgeProps} from "react-bootstrap";
 import {useAppSelector} from "@/app/configureStore.ts";
 import {selectSeasonById} from "@/ducks/settings/seasonsSlice.ts";
+import ColorBadge from "@/components/season/ColorBadge.tsx";
 
 export interface SeasonBadgeProps extends BadgeProps {
     seasonId?: number | null,
@@ -13,9 +13,8 @@ export default function SeasonBadge({seasonId, ...rest}: SeasonBadgeProps) {
         return null;
     }
     return (
-        <Badge bg={season.properties.color}
-               style={getSeasonStyle(season.properties.color)} {...rest}>
+        <ColorBadge color={season.properties.color} {...rest}>
             {season.code}
-        </Badge>
+        </ColorBadge>
     )
 }

@@ -53,8 +53,8 @@ export default function ProductContent() {
                     </Nav>
                 </Col>
             </Row>
-            {activeKey === '/main' && (<ProductEditor/>)}
-            {activeKey === '/dimensions' && (<ProductDimensions/>)}
+            {activeKey === '/main' && (<ProductEditor />)}
+            {activeKey === '/dimensions' && (<ProductDimensions />)}
         </div>
     )
 }

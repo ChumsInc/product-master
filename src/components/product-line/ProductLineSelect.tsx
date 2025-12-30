@@ -20,6 +20,9 @@ export default function ProductLineSelect({
             {includeAll && (
                 <option value="">All</option>
             )}
+            {!includeAll && (
+                <option value=""></option>
+            )}
             {productLines
                 .filter(pl => includeDiscontinued || pl.active)
                 .map(pl => (
