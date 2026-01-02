@@ -1,5 +1,5 @@
 import {useAppDispatch, useAppSelector} from "@/app/configureStore.ts";
-import {selectCurrentSKUGroup, setCurrentSKUGroup} from "@/ducks/sku-groups/skuGroupsSlice.ts";
+import {selectCurrentSKUGroup, setCurrentSKUGroup} from "@/ducks/sku-groups/currentSkuGroupSlice.ts";
 import {type ChangeEvent, type FormEvent, useId, useState} from "react";
 import type {SKUGroup} from "chums-types";
 import {Button, Col, Form, Row} from "react-bootstrap";

@@ -5,7 +5,7 @@ import type {RootState} from "@/app/configureStore.ts";
 import {selectCurrentProductStatus} from "@/ducks/product/currentProductSlice.ts";
 
 export const loadProduct = createAsyncThunk<ProductMaster|null, number|string, {state:RootState}>(
-    'currentProduct/load',
+    'products/current/load',
     async (arg) => {
         if (!arg) {
             return null;
@@ -21,7 +21,7 @@ export const loadProduct = createAsyncThunk<ProductMaster|null, number|string, {
 )
 
 export const saveProduct = createAsyncThunk<ProductMaster|null, ProductMaster, {state:RootState}>(
-    'currentProduct/save',
+    'products/current/save',
     async (arg) => {
         return await postProduct(arg);
     },
@@ -34,7 +34,7 @@ export const saveProduct = createAsyncThunk<ProductMaster|null, ProductMaster, {
 );
 
 export const saveProductAttributes = createAsyncThunk<ProductMaster|null,  SaveProductAttributesArgs, {state:RootState}>(
-    'currentProduct/saveAttributes',
+    'products/current/saveAttributes',
     async (arg) => {
         return await postProductAttributes(arg);
     },

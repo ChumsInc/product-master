@@ -2,7 +2,7 @@ import {fetchJSON} from "@chumsinc/ui-utils";
 import type {BaseSKU} from "chums-types";
 
 export interface FetchBaseSkuListProps {
-    idSkuGroup?: number;
+    idSkuGroup?: number|string|null;
 
 }
 export async function fetchBaseSkuList(arg?: FetchBaseSkuListProps):Promise<BaseSKU[]> {

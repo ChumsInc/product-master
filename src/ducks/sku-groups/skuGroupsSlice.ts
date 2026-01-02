@@ -6,15 +6,13 @@ import {dismissAlert} from "@chumsinc/alert-list";
 import {skuGroupSorter} from "@/ducks/settings/utils.ts";
 
 interface SKUGroupsState {
-    current: SKUGroup | null;
-    status: 'idle' | 'loading' | 'saving' | 'rejected';
+    status: 'idle' | 'loading' | 'rejected';
     showInactive: boolean;
     search: string;
     sort: SortProps<SKUGroup>
 }
 
 const extraState: SKUGroupsState = {
-    current: null,
     status: 'idle',
     showInactive: false,
     search: '',
@@ -33,9 +31,6 @@ const skuGroupsSlice = createSlice({
     reducers: {
         setShowInactiveSKUGroups: (state, action: PayloadAction<boolean>) => {
             state.showInactive = action.payload;
-        },
-        setCurrentSKUGroup: (state, action: PayloadAction<SKUGroup | null>) => {
-            state.current = action.payload;
         },
         setSKUGroupSearch: (state, action: PayloadAction<string>) => {
             state.search = action.payload;
@@ -59,30 +54,15 @@ const skuGroupsSlice = createSlice({
             .addCase(loadSkuGroups.rejected, (state) => {
                 state.status = 'rejected';
             })
-            .addCase(loadSkuGroup.pending, (state) => {
-                state.status = 'loading';
-            })
             .addCase(loadSkuGroup.fulfilled, (state, action) => {
-                state.current = action.payload;
                 if (action.payload) {
                     adapter.setOne(state, action.payload);
                 }
-            })
-            .addCase(loadSkuGroup.rejected, (state) => {
-                state.status = 'rejected';
-            })
-            .addCase(saveSkuGroup.pending, (state) => {
-                state.status = 'saving';
             })
             .addCase(saveSkuGroup.fulfilled, (state, action) => {
-                state.status = 'idle'
-                state.current = action.payload;
                 if (action.payload) {
                     adapter.setOne(state, action.payload);
                 }
-            })
-            .addCase(saveSkuGroup.rejected, (state) => {
-                state.status = 'rejected';
             })
             .addCase(dismissAlert, (state, action) => {
                 if (action.payload.context?.startsWith('skuGroups/')) {
@@ -92,7 +72,6 @@ const skuGroupsSlice = createSlice({
     },
     selectors: {
         selectSKUGroups: (state) => selectors.selectAll(state),
-        selectCurrentSKUGroup: (state) => state.current ?? null,
         selectSKUGroupsStatus: (state) => state.status,
         selectSKUGroupsShowInactive: (state) => state.showInactive,
         selectSKUGroupSearch: (state) => state.search,
@@ -107,11 +86,9 @@ export const {
     selectSKUGroupsShowInactive,
     selectSKUGroupSort,
     selectSKUGroupsStatus,
-    selectCurrentSKUGroup
 } = skuGroupsSlice.selectors;
 export const {
     setShowInactiveSKUGroups,
-    setCurrentSKUGroup,
     setSKUGroupSort,
     setSKUGroupSearch,
 } = skuGroupsSlice.actions;

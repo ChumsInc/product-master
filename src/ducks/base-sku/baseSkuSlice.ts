@@ -52,6 +52,7 @@ const baseSkuSlice = createSlice({
                 state.status = 'loading'
                 if (action.meta.arg.idSkuGroup && state.skuGroupId !== action.meta.arg.idSkuGroup) {
                     adapter.removeAll(state);
+                    state.skuGroupId = action.meta.arg.idSkuGroup ? +action.meta.arg.idSkuGroup : null;
                 }
             })
             .addCase(loadBaseSkuList.fulfilled, (state, action) => {
@@ -74,6 +75,7 @@ const baseSkuSlice = createSlice({
         selectBaseSKUSearch: (state) => state.search,
         selectShowInactiveBaseSKUs: (state) => state.showInactive,
         selectBaseSKUSort: (state) => state.sort,
+        selectSkuGroupId: (state) => state.skuGroupId,
     }
 });
 
@@ -84,7 +86,8 @@ export const {
     selectBaseSKUsStatus,
     selectBaseSKUSearch,
     selectShowInactiveBaseSKUs,
-    selectBaseSKUSort
+    selectBaseSKUSort,
+    selectSkuGroupId
 } = baseSkuSlice.selectors;
 export const {
     setCurrentBaseSKU,

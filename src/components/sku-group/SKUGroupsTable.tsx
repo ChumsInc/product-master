@@ -1,9 +1,7 @@
 import {useAppDispatch, useAppSelector} from "@/app/configureStore.ts";
 import {
-    selectCurrentSKUGroup,
     selectFilteredSKUGroups,
     selectSKUGroupSort,
-    setCurrentSKUGroup,
     setSKUGroupSort
 } from "@/ducks/sku-groups/skuGroupsSlice.ts";
 import {useState} from "react";
@@ -13,7 +11,7 @@ import {ErrorBoundary} from "react-error-boundary";
 import ErrorFallbackComponent from "@/components/common/ErrorFallbackComponent.tsx";
 import {skuGroupFields} from "@/components/sku-group/skuGroupsFields.tsx";
 import clsx from "clsx";
-import {loadBaseSkuList} from "@/ducks/base-sku/actions.ts";
+import {selectCurrentSKUGroup} from "@/ducks/sku-groups/currentSkuGroupSlice.ts";
 
 
 export default function SKUGroupsTable() {
@@ -43,10 +41,6 @@ function PaginatedSkuGroupsTable({list, sort}: PaginatedSkuGroupsTableProps) {
         dispatch(setSKUGroupSort(sort));
     }
 
-    const onSelectRow = (row: SKUGroup) => {
-        dispatch(setCurrentSKUGroup(row));
-        dispatch(loadBaseSkuList({idSkuGroup: row.id}))
-    }
     const rowsPerPageChangeHandler = (rpp: number) => {
         setRowsPerPage(rpp);
         setPage(0);
@@ -61,8 +55,7 @@ function PaginatedSkuGroupsTable({list, sort}: PaginatedSkuGroupsTableProps) {
                                      currentSort={sort} onChangeSort={sortChangeHandler}
                                      data={pagedList} keyField={(row) => row.id}
                                      selected={row => row.id === current?.id}
-                                     rowClassName={(row) => clsx({'table-warning': !row.active})}
-                                     onSelectRow={onSelectRow}/>
+                                     rowClassName={(row) => clsx({'table-warning': !row.active})}/>
             <TablePagination page={page} onChangePage={setPage} size="sm"
                              rowsPerPage={rowsPerPage} rowsPerPageProps={{onChange: rowsPerPageChangeHandler}}
                              count={list.length} showFirst showLast/>

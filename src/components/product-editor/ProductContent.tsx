@@ -14,12 +14,7 @@ interface ContentLink {
 const contentLinks = [
     {key: '/main', label: 'Main'},
     {key: '/dimensions', label: 'Dimensions'},
-    {key: '/images', label: 'Images'},
-    {key: '/inventory', label: 'Inventory'},
-    {key: '/notes', label: 'Notes'},
-    {key: '/tags', label: 'Tags'},
-    {key: '/customFields', label: 'Custom Fields'},
-    {key: '/history', label: 'History'},
+    {key: '/items', label: 'Sage Items'},
 ] as ContentLink[];
 
 export default function ProductContent() {

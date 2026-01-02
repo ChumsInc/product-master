@@ -53,7 +53,7 @@ const extraState: ProductListState = {
 };
 
 const productListSlice = createSlice({
-    name: 'productList',
+    name: 'products',
     initialState: adapter.getInitialState(extraState),
     reducers: {
         setProductListSort: (state, action: PayloadAction<SortProps<FlattenedProductMaster>>) => {

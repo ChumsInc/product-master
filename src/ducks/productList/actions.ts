@@ -5,7 +5,7 @@ import type {RootState} from "@/app/configureStore.ts";
 import {selectProductListStatus} from "@/ducks/productList/productListSlice.ts";
 
 export const loadProductList = createAsyncThunk<ProductMaster[], void, { state: RootState }>(
-    'productList/load',
+    'products/list/load',
     async () => {
         return await fetchProductList();
     },

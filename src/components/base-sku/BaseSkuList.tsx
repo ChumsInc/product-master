@@ -8,18 +8,22 @@ import ErrorFallbackComponent from "@/components/common/ErrorFallbackComponent.t
 import {baseSkuListFields} from "@/components/base-sku/baseSkuListFields.tsx";
 import clsx from "clsx";
 
-export default function BaseSkuList() {
+export interface BaseSkuListProps {
+    defaultRowsPerPage?: number;
+}
+export default function BaseSkuList({defaultRowsPerPage}: BaseSkuListProps) {
     const list = useAppSelector(selectFilteredBaseSKUs);
     const sort = useAppSelector(selectBaseSKUSort);
     const key = `${sort.field}:${sort.ascending ? 'asc' : 'desc'}-${list.length}`;
     return (
-        <BaseSkuTable list={list} sort={sort} key={key}/>
+        <BaseSkuTable list={list} sort={sort} key={key} defaultRowsPerPage={defaultRowsPerPage}/>
     )
 }
 
 interface BaseSkuTableProps {
     list: BaseSKU[];
     sort: SortProps<BaseSKU>;
+    defaultRowsPerPage?: number;
 }
 
 function baseSkuRowClassName(row:BaseSKU) {
@@ -28,10 +32,10 @@ function baseSkuRowClassName(row:BaseSKU) {
         'table-danger': !row.active || row.itemStats?.items === 0
     });
 }
-function BaseSkuTable({list, sort}: BaseSkuTableProps) {
+function BaseSkuTable({list, sort, defaultRowsPerPage}: BaseSkuTableProps) {
     const dispatch = useAppDispatch();
     const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [rowsPerPage, setRowsPerPage] = useState(defaultRowsPerPage ?? 25);
 
 
     const sortChangeHandler = (sort: SortProps<BaseSKU>) => {

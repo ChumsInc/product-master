@@ -22,11 +22,9 @@ const tabs: TabProps[] = [
     },
     {id: 'seasons', to: '/seasons', title: 'Seasons'},
     {id: 'sku-groups', to: '/sku-groups', title: 'SKU Groups'},
-    {
-        id: tabSettings,
-        to: '/settings',
-        title: 'Settings'
-    },
+    {id: 'colors', to: '/colors', title: 'Colors'},
+    {id: 'mixes', to: '/mixes', title: 'Mixes'},
+    {id: 'categories', to: '/categories', title: 'Product Categories'},
     {id: tabAbout, to: '/about', title: 'About'}
 ]
 

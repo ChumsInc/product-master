@@ -14,6 +14,7 @@ import productListSlice from "@/ducks/productList/productListSlice.ts";
 import userSlice from "@/ducks/user/userSlice.ts";
 import currentProductSlice from "@/ducks/product/currentProductSlice.ts";
 import baseSkuSlice from "@/ducks/base-sku/baseSkuSlice.ts";
+import currentSkuGroupSlice from "@/ducks/sku-groups/currentSkuGroupSlice.ts";
 
 
 const rootReducer = combineReducers({
@@ -26,9 +27,10 @@ const rootReducer = combineReducers({
     [mixesSlice.reducerPath]: mixesSlice.reducer,
     [seasonsSlice.reducerPath]: seasonsSlice.reducer,
     [skuGroupsSlice.reducerPath]: skuGroupsSlice.reducer,
+    [currentSkuGroupSlice.reducerPath]: currentSkuGroupSlice.reducer,
     [subCategoriesSlice.reducerPath]: subCategoriesSlice.reducer,
-    [currentProductSlice.reducerPath]: currentProductSlice.reducer,
     [productListSlice.reducerPath]: productListSlice.reducer,
+    [currentProductSlice.reducerPath]: currentProductSlice.reducer,
     [userSlice.reducerPath]: userSlice.reducer,
 })
 

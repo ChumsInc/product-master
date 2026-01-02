@@ -6,6 +6,7 @@ import AppRedirect from "@/components/app/AppRedirect.tsx";
 import ProductContent from "@/components/product-editor/ProductContent.tsx";
 import SeasonsContainer from "@/components/season/SeasonsContainer.tsx";
 import SKUGroupsContent from "@/components/sku-group/SKUGroupsContent.tsx";
+import ComingSoon from "@/components/app/ComingSoon.tsx";
 
 export default function AppRouter() {
     return (
@@ -19,7 +20,14 @@ export default function AppRouter() {
                         <Route path=":id" element={<ProductContent />} />
                     </Route>
                     <Route path="seasons" element={<SeasonsContainer />} />
-                    <Route path="sku-groups" element={<SKUGroupsContent />} />
+                    <Route path="sku-groups">
+                        <Route index element={<SKUGroupsContent />} />
+                        <Route path=":id" element={<SKUGroupsContent />} />
+                    </Route>
+                    <Route path="colors" element={<ComingSoon />}/>
+                    <Route path="mixes" element={<ComingSoon />}/>
+                    <Route path="categories" element={<ComingSoon />}/>
+                    <Route path="about" element={<ComingSoon />}/>
                     <Route path="*" element={<div>Content Not Found</div>} />
                 </Route>
             </Routes>

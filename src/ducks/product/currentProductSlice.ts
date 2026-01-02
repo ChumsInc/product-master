@@ -15,7 +15,7 @@ const initialState: CurrentProductState = {
 };
 
 const productSlice = createSlice({
-    name: 'currentProduct',
+    name: 'products/current',
     initialState: initialState,
     reducers: {
         setCurrentProduct: (state, action: PayloadAction<ProductMaster | null>) => {
@@ -64,7 +64,7 @@ const productSlice = createSlice({
                 }
             })
             .addCase(dismissAlert, (state, action) => {
-                if (action.payload.context?.startsWith('currentProduct/')) {
+                if (action.payload.context?.startsWith('products/current/')) {
                     state.status = 'idle';
                 }
             })

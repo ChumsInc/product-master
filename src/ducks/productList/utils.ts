@@ -111,11 +111,11 @@ export const productDimensionsSorter = (sort: SortProps<Flatten<ProductMaster>>)
             case 'height':
             case 'quantity':
                 return (
-                    (a.attributes?.[subField1]?.[subField2] ?? 0) - (b.attributes?.[subField1]?.[subField2] ?? 0)
+                    +(a.attributes?.[subField1]?.[subField2] ?? 0) - +(b.attributes?.[subField1]?.[subField2] ?? 0)
                 )
             case 'volume': {
-                const volumeA = (a.attributes?.[subField1]?.width ?? 0) * (a.attributes?.[subField1]?.length ?? 0) * (a.attributes?.[subField1]?.height ?? 0) * (a.attributes?.[subField1]?.quantity ?? 1);
-                const volumeB = (a.attributes?.[subField1]?.width ?? 0) * (b.attributes?.[subField1]?.length ?? 0) * (b.attributes?.[subField1]?.height ?? 0) * (a.attributes?.[subField1]?.quantity ?? 1);
+                const volumeA = +(a.attributes?.[subField1]?.width ?? 0) * +(a.attributes?.[subField1]?.length ?? 0) * +(a.attributes?.[subField1]?.height ?? 0) * +(a.attributes?.[subField1]?.quantity ?? 1);
+                const volumeB = +(a.attributes?.[subField1]?.width ?? 0) * +(b.attributes?.[subField1]?.length ?? 0) * +(b.attributes?.[subField1]?.height ?? 0) * +(a.attributes?.[subField1]?.quantity ?? 1);
                 return volumeA - volumeB;
             }
             default: {
