@@ -12,32 +12,19 @@ const StatusDropdownToggle = styled(Dropdown.Toggle)`
     justify-content: space-between;
 `
 export interface StatusDropdownProps extends Omit<DropdownProps, 'onChange'|'children'> {
-    status: ProductStatusAttributes;
-    onChange: (status: ProductStatusAttributes) => void;
+    status: ProductStatusAttributes|null;
+    onChange: (status: ProductStatusAttributes|null) => void;
     showAbbreviations?: boolean;
     buttonAttributes?: DropdownToggleProps;
     includeAll?: boolean;
 }
 
-const allStatus:ProductStatusAttributes = {
-    new: true,
-    approved: true,
-    live: true,
-    updating: true,
-    watch: true,
-    discontinued: true,
-}
-const noneStatus:ProductStatusAttributes = {
-    new: false,
-    approved: false,
-    live: false,
-    updating: false,
-    watch: false,
-    discontinued: false,
-}
-
 export default function StatusDropdown({status, onChange, showAbbreviations, id, buttonAttributes, includeAll, ...rest}: StatusDropdownProps) {
     const changeHandler = (code: keyof ProductStatusAttributes) => {
+        if (!status) {
+            onChange({[code]: true});
+            return;
+        }
         onChange({...status, [code]: !status[code]});
     }
     return (
@@ -48,16 +35,14 @@ export default function StatusDropdown({status, onChange, showAbbreviations, id,
             </StatusDropdownToggle>
             <Dropdown.Menu>
                 {includeAll && (
-                    <StatusDropdownItem code="all" checked={false}
-                                        onClick={() => onChange(allStatus)}/>
+                    <>
+                        <StatusDropdownItem code="all" checked={!status}
+                                            onClick={() => onChange(null)}/>
+                        <Dropdown.Divider/>
+                    </>
                 )}
-                {includeAll && (
-                    <StatusDropdownItem code="none" checked={false}
-                                        onClick={() => onChange(noneStatus)}/>
-                )}
-                <Dropdown.Divider/>
                 {statusKeys.map(k => (
-                    <StatusDropdownItem key={k} code={k} checked={status[k]}
+                    <StatusDropdownItem key={k} code={k} checked={status?.[k]}
                                         onClick={() => changeHandler(k)}/>
                 ))}
             </Dropdown.Menu>

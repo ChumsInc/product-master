@@ -11,9 +11,14 @@ export default function StatusFilter() {
     const dispatch = useAppDispatch();
     const currentStatus = useAppSelector(selectStatusFilter);
 
-    const changeHandler = (status:ProductStatusAttributes) => {
+    const changeHandler = (status:ProductStatusAttributes|null) => {
+        if (!status || Object.keys(status).filter(k => status?.[k as keyof ProductStatusAttributes]).length === 0) {
+            LocalStore.setItem<ProductStatusAttributes|null>(productListStatusFiltersKey, null)
+            dispatch(setStatusFilter(null))
+            return;
+        }
         const nextStatus = {...currentStatus, ...status};
-        LocalStore.setItem<ProductStatusAttributes>(productListStatusFiltersKey, nextStatus)
+        LocalStore.setItem<ProductStatusAttributes|null>(productListStatusFiltersKey, nextStatus)
         dispatch(setStatusFilter(nextStatus))
     }
 

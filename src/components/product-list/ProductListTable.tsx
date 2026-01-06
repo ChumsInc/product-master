@@ -37,14 +37,18 @@ export default function ProductListTable() {
 
     return (
         <div>
-            {status === 'loading' && <ProgressBar animated now={100} className="my-1"/>}
+            <div className="my-1" style={{minHeight: '0.5rem'}}>
+                {status === 'loading' && <ProgressBar animated now={100} className="my-1" style={{height: '0.5rem'}}/>}
+            </div>
             <div className="table-responsive">
                 <SortableTable data={data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)} size="xs"
                                selected={(row) => product?.id === row.id}
                                rowClassName={(row) => clsx({'table-warning': !row.active})}
                                onChangeSort={sortChangeHandler} keyField="id"/>
             </div>
-            <TablePagination page={page} rowsPerPage={rowsPerPage} onChangePage={setPage} count={data.length}
+            <TablePagination count={data.length} size="sm"
+                             page={page} onChangePage={setPage}
+                             rowsPerPage={rowsPerPage}
                              rowsPerPageProps={{
                                  onChange: rowsPerPageChangeHandler
                              }} showFirst showLast/>

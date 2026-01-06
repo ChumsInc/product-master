@@ -21,7 +21,7 @@ export async function postProduct(arg: ProductMaster):Promise<ProductMaster|null
         const body = JSON.stringify(arg);
         const url = arg.id
             ? `/api/operations/product-master/v2/products/${arg.id}.json`
-            : '/api/operations/product-master/v2/products.json';
+            : '/api/operations/product-master/v2/product.json';
         const method = arg.id ? 'PUT' : 'POST';
         const res = await fetchJSON<{ product: ProductMaster|null }>(url, {method, body})
         return res?.product ?? null;

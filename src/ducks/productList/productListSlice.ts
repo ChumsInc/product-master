@@ -29,7 +29,7 @@ export interface ProductListState {
     loaded: boolean;
     sort: SortProps<FlattenedProductMaster>;
     filters: ProductListFilter;
-    statusFilters: ProductStatusAttributes;
+    statusFilters: ProductStatusAttributes|null;
 }
 
 const extraState: ProductListState = {
@@ -43,13 +43,7 @@ const extraState: ProductListState = {
         season: null,
         search: null,
     }),
-    statusFilters: LocalStore.getItem<ProductStatusAttributes>(productListStatusFiltersKey, {
-        new: true,
-        updating: true,
-        approved: true,
-        live: true,
-        discontinued: false
-    }),
+    statusFilters: LocalStore.getItem<ProductStatusAttributes|null>(productListStatusFiltersKey, null),
 };
 
 const productListSlice = createSlice({
@@ -68,8 +62,12 @@ const productListSlice = createSlice({
         setSeasonFilter: (state, action: PayloadAction<number | null>) => {
             state.filters.season = action.payload;
         },
-        setStatusFilter: (state, action: PayloadAction<Partial<ProductStatusAttributes>>) => {
-            state.statusFilters = {...state.statusFilters, ...action.payload};
+        setStatusFilter: (state, action: PayloadAction<Partial<ProductStatusAttributes>|null>) => {
+            if (!action.payload) {
+                state.statusFilters = null;
+            } else {
+                state.statusFilters = {...state.statusFilters, ...action.payload};
+            }
         },
         setSearchFilter: (state, action: PayloadAction<string | null>) => {
             state.filters.search = action.payload;
@@ -157,7 +155,7 @@ export const selectFilteredProductList = createSelector(
             .filter(product => !productLine || product.productLine === productLine)
             .filter(product => !skuGroup || product.idSKUGroup === skuGroup)
             .filter(product => !season || product.season?.id === season)
-            .filter(product => filterProductsByStatus(product, status))
+            .filter(product => !status || filterProductsByStatus(product, status))
             .filter(product => !search
                 || product.devCode?.toLowerCase().includes(search.toLowerCase())
                 || product.SKU?.toLowerCase().includes(search.toLowerCase())

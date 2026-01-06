@@ -42,7 +42,6 @@ const seasonSplit = (code: string): string => {
 
 export const seasonSorter = (sort: SortProps<ProductSeason>) =>
     (a: ProductSeason, b: ProductSeason) => {
-        console.log(a.code, b.code, seasonSplit(a.code ?? ''), seasonSplit(b.code ?? ''))
         const sortMod = sort.ascending ? 1 : -1;
         const field = sort.field;
         switch (field) {

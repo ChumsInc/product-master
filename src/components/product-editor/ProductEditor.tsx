@@ -74,7 +74,10 @@ export default function ProductEditor() {
 
     }
 
-    const statusChangeHandler = (arg: ProductStatusAttributes) => {
+    const statusChangeHandler = (arg: ProductStatusAttributes|null) => {
+        if (!arg) {
+            return;
+        }
         const status = currentProduct.status ?? {};
         updateCurrentProduct({status: {...status, ...arg}});
     }
